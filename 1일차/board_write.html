@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<title>리뷰게시판 글작성</title>
+<style>
+    body { background-image: url('./assets/8.PNG');}
+    body { background-size : cover;}  
+    header { background-color:lightsalmon;}
+    table { background-color: oldlace; }
+
+
+
+</style>
+
+
+<body>
+  <center>
+<header>
+  <br>
+<h1>리뷰작성</h1>
+  <br>
+</header>
+<table>
+  <br> <br> <br>
+  <tr>
+    <th>제목</th>
+    <td><input type="text" id="title" name="title"/></td>
+  </tr>
+  <tr>
+    <th>작성자</th>
+    <td><input type="text" id="writer" name="writer"/></td>
+  </tr>
+  <tr>
+    <th>별점</th>
+    <td><input type="range" id="score" min="1" max="5"/> (1~5) </td>
+  </tr>
+  <tr>
+    <th>내용</th>
+    <td>
+      <textarea type="text" id="contents" name="contents" cols="80" rows="20"></textarea>
+    </td>
+  </tr>
+</tr>
+<tr>
+  <th>첨부파일</th>
+  <td>
+     <!-- 사진 -->
+    <input type="file" id="image" accept="image/*" onchange="setThumbnail(event);"/>
+     <div id="image_container"></div>
+
+    
+  </td>
+</center>
+</tr>
+
+</table>
+<center>
+<div style="width:100%; ">
+  <br>
+  <button onclick="window.history.back()">취소</button>
+  <button onclick="save()">저장</button>
+</center>
+</div>
+
+</body>
+<script src="./scripts/form.js">
+</script>
+</html>
