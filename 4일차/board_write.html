@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<title>리뷰게시판 글작성</title>
+<style>
+    body { background-image: url('./assets/8.PNG');}
+    body { background-size : cover;}  
+    header { background-color:lightsalmon;}
+    table { background-color: oldlace; }
+</style>
+<head>
+  <meta charset="utf-8">
+</head>
+
+<body>
+  <center>
+<header>
+  <br>
+<h1>글작성</h1>
+  <br>
+</header>
+<table>
+  <br> <br> 
+  <tr>
+    <th>제목</th>
+    <td><input type="text" id="title" name="title"/></td>
+  </tr>
+  <tr>
+    <th>작성자</th>
+    <td><input type="text" id="writer" name="writer"/></td>
+  </tr>
+  <!-- <tr>
+    <th>별점</th>
+    <td><input type="range" id="score" min="1" max="5"/> (1~5) </td>
+  </tr>
+  <tr> -->
+    <th>내용</th>
+    <td>
+      <textarea type="text" id="contents" name="contents" cols="80" rows="20"></textarea>
+    </td>
+  </tr>
+</tr>
+<tr>
+  <th>첨부파일</th>
+  <td>
+    <br>
+    <!-- <input type="file" id="image" accept="image/*" onchange="setThumbnail(event);"/>
+     <div id="image_container"></div> -->
+    <input type="file" onchange="previewFile()"><br>
+    <img src="" id="image" height="300" onError="this.style.visibility='hidden'">  
+  </td>
+</center>
+</tr>
+
+</table>
+<center>
+<div style="width:100%; ">
+  <br>
+  <button onclick="window.history.back()">취소</button>
+  <button onclick="save()">저장</button>
+</center>
+</div>
+
+</body>
+<script>
+    // function setThumbnail(event) {
+    //   var reader = new FileReader();
+    //   reader.onload = function(event) {
+    //     var img = document.createElement("img"); 
+    //     img.setAttribute("src", event.target.result); 
+    //     document.querySelector("div#image_container").appendChild(img);
+    //   };  
+    //   reader.readAsDataURL(event.target.files[0]); 
+    // }
+
+  function previewFile() {
+  var preview = document.querySelector('img');
+  var file    = document.querySelector('input[type=file]').files[0];
+  var reader  = new FileReader();
+
+  reader.addEventListener("load", function () {
+    preview.src = reader.result;
+  }, false);
+
+  if (file) {
+    reader.readAsDataURL(file);
+    var reader_image = document.getElementById("image").style.visibility="visible";
+  }
+}
+</script>
+</html>
