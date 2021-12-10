@@ -6,8 +6,7 @@ if(!defined("_INCLUDE_")) require_once $_SERVER["DOCUMENT_ROOT"] . "/lib/include
 require_once  _LIB_PATH_ . "nav_page.class.php";
 $nav = new NavPage;
 $nav->start(5,10);
-?>
-<?php
+
 $db = new DB;
 //$db->Debug = true;
 $main_sql = "SELECT b.con_datetime, b.con_title, u.user_name, de.dept_name, b.con_vc , du.duty_name
@@ -17,6 +16,7 @@ $sql = "WITH A as (
     {$main_sql}
 )
 SELECT COUNT(*) AS CNT FROM A";
+
 $count = $db->query_one($sql);
 $str_page_bar = $nav->navpage($count);
 $sql = $main_sql;
@@ -46,12 +46,13 @@ if($query_row_count > 0)
     }
 }else {
     $str_data_row = '      
-    <tr>
-                <td style="text-align: center;" colspan="5">직원 정보를 찾을수가 없습니다.</td>
+            <tr>
+                <td style="text-align: center;" colspan="5">페이지를 찾을 수 없습니다.</td>
             </tr>
           ';
 }
 ?>
+
 <!DOCTYPE html>
 <!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7" lang="ko"> <![endif]-->
 <!--[if IE 7]> <html class="lt-ie9 lt-ie8" lang="ko"> <![endif]-->
