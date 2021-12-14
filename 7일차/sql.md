@@ -1,3 +1,4 @@
+```
 CREATE TABLE BOARD_CONTENTS 
 (
   CON_NO NUMBER(5) NOT NULL 
@@ -32,3 +33,4 @@ SELECT * FROM ex_user_set JOIN BOARD_CONTENTS ON ex_user_set.user_name = BOARD_C
 select ex_dept_set.dept_name,board_contents.con_vc FROM ex_dept_set join board_contents on ex_dept_set.dept_no = board_contents.wr_dept;
 
 SELECT b.con_datetime, b.con_title, u.user_name, d.dept_name, b.con_vc FROM ex_user_set u, ex_dept_set d, board_contents b WHERE b.wr_user = u.user_id and b.wr_dept = d.dept_no;
+```
