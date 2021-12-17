@@ -13,6 +13,27 @@ $_table_user = "EX_USER_SET";
 $_table_dept = "V_EX_DEPT_SET";
 $_table_duty = "EX_DUTY_SET";
 
+if ($post["mode"] == "write") {
+} else if 
+($post["mode"] == "modify") {
+    $con_no = $_REQUEST["con_no"];
+    $main_sql = "SELECT b.con_datetime, b.con_title, u.user_name, de.dept_name, b.con_vc , du.duty_name, b.con_body
+                FROM ex_user_set u, ex_dept_set de, board_contents b, ex_duty_set du
+                WHERE b.wr_user = u.uno and b.wr_dept = de.dept_no and b.wr_duty = du.duty_no and b.con_no={$con_no}";
+    $db->query($main_sql);
+    $db->next_record();
+    $row[2] = $db->Record;
+        $con_date = substr($row[2]["con_datetime"], 0, 10);
+        $dept_user = "[" . $row[2]["dept_name"] . "] " . $row[2]["user_name"] . " " . $row[2]["duty_name"];
+        $con_title = $row[2]["con_title"];
+    
+}
+else
+{
+    Fun::alert("정상적인 방법으로 접속하여 주세요.");
+    exit;
+}
+
 $sql = "SELECT * FROM {$_table_dept} WHERE LEVEL_NO=3 OR LEVEL_NO=4";
 $opt_dept_id = null;
 $opt_user_name = null;
@@ -21,9 +42,10 @@ if ($db->nf() > 0) {
     while ($db->next_record()) {
         $row[0] = $db->Record;
         $_sel = "";
-        // if($dept_id == $db->f("dept_no")){
-        // 	$_sel = " selected";
-        // }
+        
+        if($dept_id == $db->f("dept_no")){
+        	$_sel = " selected";
+        }
         $txt = str_replace(" ", "&nbsp", $db->f("dept_name_lvl"));
         $opt_dept_id .= "<option value=\"{$db->f("dept_no")}\"{$_sel} title=\"{$db->f("dept_name_path")}\">{$txt}</option>\n";
     }
@@ -40,7 +62,7 @@ if ($db->nf() > 0) {
     }
 }
 
-$con_datetime = date("Y.m.d H:i:s");
+// $con_datetime = date("Y.m.d");
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7" lang="ko"> <![endif]-->
@@ -164,7 +186,7 @@ $con_datetime = date("Y.m.d H:i:s");
                     <label for="con_title">제목</label>
                 </div>
                 <div class="col-75">
-                    <input type="text" id="con_title" name="con_title" placeholder="제목을 입력하세요">
+                    <input type="text" id="con_title" name="con_title" placeholder="제목을 입력하세요" value="<?php echo $con_title;?>"/>
                 </div>
             </div>
             <div class="row" style="text-align:left;">
@@ -172,13 +194,13 @@ $con_datetime = date("Y.m.d H:i:s");
                     <label for="wr_user">작성자</label>
                 </span>
                 <span class="col-50">
-                    <input type="text" id="wr_user" name="wr_user">
+                    <input type="text" id="wr_user" name="wr_user" value="<?php echo $dept_user;?>">
                 </span>
                 <span class="col-25">
                     <label for="con_datetime">&nbsp;&nbsp;작성일</label>
                 </span>
                 <span class="col-50">
-                    <input type="text" id="con_datetime" name="con_datetime" value="<?php echo $con_datetime; ?>" disabled readonly>
+                    <input type="text" id="con_datetime" name="con_datetime" value="<?php echo $con_date; ?>" disabled readonly>
                 </span>
             </div>
             <div class="row">
