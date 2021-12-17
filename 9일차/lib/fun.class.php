@@ -188,7 +188,7 @@ class Fun
             $str_query = "";
         }
         if(!$_SERVER["QUERY_STRING"]){
-            $Result = $_SERVER["REQUEST_URI"] . $str_query;
+            $Result = $str_query;
         } else {
             $expKey = str_replace(",","|",$expKey);
             $matches = null;
@@ -197,24 +197,29 @@ class Fun
                 preg_match($pattern, $_key, $matches);
                 if($_key != "logout" && !$matches && $_val != ""){ //!eregi(pattern, $_key)
                     $_val = urlencode($_val);
+                    $str_query .= "&" . $_key . "=" . $_val;
+                    /*
                     if(!$str_query){
-                        $str_query =  $_key . "=" . $_val;
+                        $str_query = $_key . "=" . $_val;
                     } else {
                         $str_query .= "&" . $_key . "=" . $_val;
                     }
+                     */
                     //echo $expKey . "<br />";
                     //echo $str_query . "<br />";
                 }
             }
             $Result = $str_query;
         }
-
+        
+        /*
         $matches = null;
-        $pattern = "/\?/";
+        $pattern = "/^(\?)/";
         preg_match($pattern, $Result, $matches);
         if(isset($Result) && !$matches){ //!eregi("\?", $page_url
-            // $Result .= "?";
+            $Result = "?" . $Result;
         }
+        */
         return $Result;
     }
     
