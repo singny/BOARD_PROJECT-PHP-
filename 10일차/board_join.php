@@ -51,13 +51,6 @@ if ($db->nf() > 0) {
     $opt_loc_id .= "<option value=\"{$db->f("LOC_NO")}\" title=\"{$db->f("LOC_NAME")}\">{$txt3}</option>\n";
   }
 }
-
-$idk_sql = "SELECT user_id FROM EX_USER_SET WHERE user_id="
-."<script>
-var id_chk = document.getElementById(\"user_id\").value;
-document.write(id_chk);
-</script>";
-
 ?>
 <!DOCTYPE html>
 <html lang="ko">
@@ -209,12 +202,10 @@ document.write(id_chk);
 
     function id_chk() {
       var user_id = document.getElementById("user_id").value;
-      if (user_id) {
+      
         url = "board_id_chk.php?user_id=" + user_id;
-        window.open(url, "chkid", "width=300,height=150 ,scrollbars=no");
-      } else {
-        alert("아이디를 입력하세요");
-      }
+        window.open(url, "chkid", "width=300,height=150,top=250,left=1000,scrollbars=no,toolbar=no,menubar=no,location=no,directories=no,resizable=no, status=no");
+
     }
   </script>
 </body>
