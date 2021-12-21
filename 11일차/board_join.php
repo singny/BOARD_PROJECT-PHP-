@@ -5,7 +5,6 @@ if (!defined("_INCLUDE_")) require_once $_SERVER["DOCUMENT_ROOT"] . "/lib/includ
 @error_reporting(E_ALL);
 
 include_once "_inc.php";
-include_once "board_id_chk.php";
 
 $db = new DB;
 
