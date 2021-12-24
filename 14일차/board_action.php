@@ -69,9 +69,9 @@ else if($post["mode"] == "write"){
         try{
             $con_no = $db->nextid("SEQ_" . $_table_board);
             $sql = "INSERT INTO {$_table_board} ("
-                    . " CON_NO, CON_DATETIME, WR_USER, CON_TITLE, CON_BODY, RE_USER, CON_VC"
+                    . " CON_NO, CON_DATETIME, WR_USER, CON_TITLE, CON_BODY, RE_USER"
                     . ") VALUES ("
-                    . " {$con_no}, to_char(sysdate,'yyyy.mm.dd hh24:mi:ss'),'{$post["uno"]}', '{$post["con_title"]}','{$post["con_body"]}', {$post["re_user"]},0"
+                    . " {$con_no}, to_char(sysdate,'yyyy.mm.dd hh24:mi:ss'),'{$post["uno"]}', '{$post["con_title"]}','{$post["con_body"]}', {$post["re_user"]}"
                     . ")";
             $db->query($sql);
             $db->commit();
@@ -82,18 +82,20 @@ else if($post["mode"] == "write"){
         }
         $db->EndTransaction();
         //파일 업로드
-$uploaddir = __DIR__.'\upload_file\\';
-$uploadfile = $uploaddir . basename($_FILES['userfile']['name']);
-echo '<pre>';
-if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
-    echo "파일이 유효하고, 성공적으로 업로드 되었습니다.\n";
-} else {
-    print "파일 업로드 공격의 가능성이 있습니다!\n";
-}
-// echo '자세한 디버깅 정보입니다:';
-// print_r($_FILES);
-// print "</pre>";
-        Fun::alert("정상적으로 글을 추가하였습니다.", "board_list.php");
+        mkdir("upload_file/{$con_no}", 0777, true);
+        $uploaddir = __DIR__."/upload_file/{$con_no}/";
+        $uploadfile = $uploaddir . basename($_FILES['userfile']['name']);
+        if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
+            echo "파일이 유효하고, 성공적으로 업로드 되었습니다.\n";
+                $file_sql="UPDATE BOARD_CONTENTS SET FILE_PATH = '{$uploadfile}' WHERE CON_NO={$con_no}";
+                $db->query($file_sql);
+                $db->commit();
+                
+        
+        } else {
+            print "파일 업로드 공격의 가능성이 있습니다!\n";
+        }
+         Fun::alert("정상적으로 글을 추가하였습니다.", "board_list.php");
     
 }
 else if($post["mode"] == "delete"){
@@ -115,15 +117,4 @@ Fun::alert("정상적으로 글을 삭제하였습니다.", "board_list.php");
 else{
     Fun::alert("정상적인 방법으로 접근하여 주세요. 참조 오류 입니다.");
 }
-//파일 업로드
-$uploaddir = __DIR__.'\upload_file\\';
-$uploadfile = $uploaddir . basename($_FILES['userfile']['name']);
-echo '<pre>';
-if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) {
-    echo "파일이 유효하고, 성공적으로 업로드 되었습니다.\n";
-} else {
-    print "파일 업로드 공격의 가능성이 있습니다!\n";
-}
-// echo '자세한 디버깅 정보입니다:';
-// print_r($_FILES);
-// print "</pre>";
+
