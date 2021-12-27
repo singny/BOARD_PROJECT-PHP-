@@ -4,15 +4,14 @@ include "_inc.php";
 
 $db = new DB;
 
-
 $sql = "SELECT CON_NO, FILE_PATH FROM {$_table_board} WHERE CON_NO = {$post["con_no"]}";
 $db-> query($sql);
 while ($db->next_record()) {
   $row = $db->Record;
 }
 
-$target_Dir = $row["FILE_PATH"];
-  $file = basename($row["FILE_PATH"]);
+$target_Dir = __DIR__ . "/upload_file/{$post["con_no"]}/";
+$file = basename($row["FILE_PATH"]);
   $down = $target_Dir.$file;
   $filesize = filesize($down);
   
@@ -36,5 +35,3 @@ $target_Dir = $row["FILE_PATH"];
     }
   }
 ?>
-
-
