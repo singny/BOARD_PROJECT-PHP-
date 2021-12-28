@@ -128,42 +128,43 @@ else if($post["mode"] == "good"){
             $db->query($sql);
             $db->next_record();
             $row[0] = $db->Record;
-
-            $db->query("SELECT COUNT(*) AS CNT FROM GOOD_COUNT WHERE USER_ID = '{$user_id}' and CON_NO = {$_GET["con_no"]}");
-            $db->next_record();
-            $row[1] = $db->Record;
-            $n = $row[1]["CNT"];
-
-            // if($n == 0){
-            //     $good_no = $db->nextid("SEQ_" . "GOOD_COUNT");
-            //     $good_sql = "INSERT INTO GOOD_COUNT(GOOD_NO,CON_NO,USER_ID,IS_GOOD) VALUES({$good_no},{$_GET["con_no"]},'{$user_id}','Y')";
-            //     $db->query($good_sql);
-            //     $count_sql = "UPDATE BOARD_CONTENTS SET CON_GOOD = CON_GOOD + 1 WHERE CON_NO='{$_GET["con_no"]}'";
-            //     $db->query($count_sql);
-            //     $db->commit();
-            //     return "Yes";
-            // } 
-            if($n == 1 && $row[0]["is_good"] == 'Y'){
+ 
+            if($_GET["goodchk"] == 'true'){
                 $good_sql = "UPDATE GOOD_COUNT SET IS_GOOD = 'N' WHERE USER_ID = '{$user_id}' AND CON_NO = {$_GET["con_no"]}";
                 $db->query($good_sql);
-                $count_sql = "UPDATE BOARD_CONTENTS SET CON_GOOD = CON_GOOD - 1 WHERE CON_NO={$_GET["con_no"]}";
+                $db->commit();
+
+                $db->query("SELECT COUNT(*) AS con_good FROM GOOD_COUNT WHERE CON_NO = {$_GET["con_no"]} AND IS_GOOD = 'Y'");
+                $db->next_record();
+                $row[1] = $db->Record;
+                $n = $row[1]["con_good"];
+                $count_sql = "UPDATE board_contents SET con_good = {$n} WHERE CON_NO = {$_GET["con_no"]}";
                 $db->query($count_sql);
                 $db->commit();
-                return "No";
+                return $n;
             }
-            else if($n == 1 && $row[0]["is_good"] == 'N'){
+            else if($_GET["goodchk"] == 'false'){
                 $good_sql = "UPDATE GOOD_COUNT SET IS_GOOD = 'Y' WHERE USER_ID = '{$user_id}' AND CON_NO = {$_GET["con_no"]}";
                 $db->query($good_sql);
-                $count_sql = "UPDATE BOARD_CONTENTS SET CON_GOOD = CON_GOOD + 1 WHERE CON_NO= {$_GET["con_no"]}";
+                $db->commit();
+
+                $db->query("SELECT COUNT(*) AS con_good FROM GOOD_COUNT WHERE CON_NO = {$_GET["con_no"]} AND IS_GOOD = 'Y'");
+                $db->next_record();
+                $row[1] = $db->Record;
+                $n = $row[1]["con_good"];
+                $count_sql = "UPDATE board_contents SET con_good = {$n} WHERE CON_NO = {$_GET["con_no"]}";
                 $db->query($count_sql);
                 $db->commit();
-                return "Yes";
+                return $n;
             }
+
+
         }
 
     }
 
     echo good($user_id);
+
     exit;
 }
 else{
