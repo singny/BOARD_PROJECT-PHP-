@@ -93,6 +93,7 @@ $db->query("SELECT COUNT(*) AS CNT FROM GOOD_COUNT WHERE USER_ID = '{$_SESSION["
 $db->next_record();
 $row[4] = $db->Record;
 $n = $row[4]["CNT"];
+var_dump($n);
 
 if($n == 0){
   $good_no = $db->nextid("SEQ_" . "GOOD_COUNT");
@@ -101,10 +102,22 @@ if($n == 0){
   $db->commit();
 }
 
+$good_sql = "SELECT IS_GOOD FROM GOOD_COUNT WHERE USER_ID='{$_SESSION["user_id"]}' AND CON_NO = {$con_no}";
+$db->query($good_sql);
+$db->next_record();
+$row[4] = $db->Record;
+
+if($row[4]["IS_GOOD"] == 'Y'){
+  $goodbtn = "<img src=\"./image/good.png\" id=\"no_good\" name=\"no_good\" style=\"width:60px; height:60px\"/>";
+} else{
+  $goodbtn = "<img src=\"./image/no_good.png\" id=\"no_good\" name=\"no_good\" style=\"width:60px; height:60px\"/>";
+}
+
 }
 else{
   FUN::alert("잘못된 접근입니다.","board_list.php");
 }
+
 
 ?>
 <!DOCTYPE html>
@@ -226,6 +239,8 @@ else{
     <form>
       <input type="hidden" id="user_id" name="user_id" value="<?php echo $_SESSION["user_id"]?>" />
       <input type="hidden" id="con_no" name="con_no" value="<?php echo $con_no?>" />
+      <input type="hidden" id="goodchk" name="goodchk" value="false" />
+
       <h2><?php echo $con_title ?></h2>
       <div class="row">
         <div class="col-50">
@@ -249,7 +264,9 @@ else{
       <br /><br />
       <div class="row">
         <div style="margin-left:42%; cursor:pointer" id="good" name="good" onclick="good(this)"> 
-          <img src="./image/no_good.png" id="no_good" name="no_good" style="width:60px; height:60px"/>
+          <!-- <img src="./image/no_good.png" id="no_good" name="no_good" style="width:60px; height:60px"/> -->
+          <img src="./image/no_good.png" id="no_good" style="width:60px; height:60px"/>
+          <img src="./image/good.png" id="good" style="width:60px; height:60px" hidden/>
         </div>
       </div>
       <br /><br /> 
@@ -288,20 +305,34 @@ else{
 
 
       var xhttp = new XMLHttpRequest();
-      // Define a callback function
-      xhttp.onload = function() {
-        // Here you can use the Data
-        alert(this.responseText);
-        if (this.responseText == "Yes") {
-          document.getElementById("no_good").src = "./image/good.png";
-        } else if (this.responseText == "No") {
-          document.getElementById("no_good").src = "./image/no_good.png";
-        } 
+      // // Define a callback function
+      // xhttp.onload = function() {
+      //   // Here you can use the Data
+      //   alert(this.responseText);
+      //   if (this.responseText == "Yes") {
+      //     document.getElementById("no_good").src = "./image/good.png";
+      //     document.getElementById("goodchk").value = "true";
+
+      //   } else if (this.responseText == "No") {
+      //     document.getElementById("no_good").src = "./image/no_good.png";
+      //     document.getElementById("goodchk").value = "false";
+      //   } 
         
+      // }
+
+      if(no_good == false){
+        document.getElementById("no_good").hidden = true;
+        document.getElementById("good").hidden = false;
+        document.getElementById("goodchk").value = "false";
+      }
+      else {
+        document.getElementById("no_good").hidden = false;
+        document.getElementById("good").hidden = true;
+        document.getElementById("goodchk").value = "ture";
       }
       
       // Send a request
-      xhttp.open("GET", "board_action.php?mode=good&user_id=" + document.getElementById("user_id").value + "&con_no=" + document.getElementById("con_no").value);
+      xhttp.open("GET", "board_action.php?mode=good&user_id=" + document.getElementById("user_id").value + "&con_no=" + document.getElementById("con_no").value + "$goodchk=" + document.getElementById("goodchk").value);
       xhttp.send();
     }
 
