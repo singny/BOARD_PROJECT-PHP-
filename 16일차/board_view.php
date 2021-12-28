@@ -9,7 +9,7 @@ if($_REQUEST["con_no"]){
 $con_no = $_REQUEST["con_no"];
 $db = new DB;
 //$db->Debug = true;
-$main_sql = "SELECT b.con_datetime, b.con_title, u.user_name, de.dept_name, b.con_vc , du.duty_name, b.con_body, u.user_id
+$main_sql = "SELECT b.con_datetime, b.con_title, u.user_name, de.dept_name, b.con_vc , du.duty_name, b.con_body, u.user_id, b.con_good
             FROM ex_user_set u, ex_dept_set de, board_contents b, ex_duty_set du
             WHERE b.wr_user = u.uno and u.dept_id = de.dept_no and u.duty_id = du.duty_no and b.con_no={$con_no}";
 $sql = "WITH A as (
@@ -24,6 +24,7 @@ $row[0] = $db->Record;
 $date = substr($row[0]["con_datetime"], 0, 10);
 $dept_user = "[" . $row[0]["dept_name"] . "] " . $row[0]["user_name"] . " " . $row[0]["duty_name"];
 $con_title = $row[0]["con_title"];
+$con_good = $row[0]["con_good"];
 
 $re_sql = "SELECT u.user_name, de.dept_name, du.duty_name, u.uno, de.dept_no
 FROM ex_user_set u, ex_dept_set de, board_contents b, ex_duty_set du
@@ -93,7 +94,6 @@ $db->query("SELECT COUNT(*) AS CNT FROM GOOD_COUNT WHERE USER_ID = '{$_SESSION["
 $db->next_record();
 $row[4] = $db->Record;
 $n = $row[4]["CNT"];
-var_dump($n);
 
 if($n == 0){
   $good_no = $db->nextid("SEQ_" . "GOOD_COUNT");
@@ -107,17 +107,23 @@ $db->query($good_sql);
 $db->next_record();
 $row[4] = $db->Record;
 
-if($row[4]["IS_GOOD"] == 'Y'){
-  $goodbtn = "<img src=\"./image/good.png\" id=\"no_good\" name=\"no_good\" style=\"width:60px; height:60px\"/>";
-} else{
-  $goodbtn = "<img src=\"./image/no_good.png\" id=\"no_good\" name=\"no_good\" style=\"width:60px; height:60px\"/>";
+if($row[4]["is_good"] == 'Y'){
+  $goodsave = "<div style=\"margin-left:42%; cursor:pointer\" onclick=\"good(this)\">
+              <img src=\"./image/no_good.png\" id=\"no_good\" style=\"width:60px; height:60px\" hidden/>
+              <img src=\"./image/good.png\" id=\"good\" style=\"width:60px; height:60px\" />
+              </div>";
+}
+else {
+  $goodsave = "<div style=\"margin-left:42%; cursor:pointer\" onclick=\"good(this)\">
+  <img src=\"./image/no_good.png\" id=\"no_good\" style=\"width:60px; height:60px\" />
+  <img src=\"./image/good.png\" id=\"good\" style=\"width:60px; height:60px\" hidden/>
+  </div>";
 }
 
 }
 else{
   FUN::alert("잘못된 접근입니다.","board_list.php");
 }
-
 
 ?>
 <!DOCTYPE html>
@@ -132,6 +138,14 @@ else{
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+  <!-- 합쳐지고 최소화된 최신 CSS -->
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"> -->
+
+<!-- 부가적인 테마 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
   <style>
     body {
       font-family: 'Gowun Dodum', sans-serif;
@@ -240,7 +254,6 @@ else{
       <input type="hidden" id="user_id" name="user_id" value="<?php echo $_SESSION["user_id"]?>" />
       <input type="hidden" id="con_no" name="con_no" value="<?php echo $con_no?>" />
       <input type="hidden" id="goodchk" name="goodchk" value="false" />
-
       <h2><?php echo $con_title ?></h2>
       <div class="row">
         <div class="col-50">
@@ -263,11 +276,12 @@ else{
       </div>
       <br /><br />
       <div class="row">
-        <div style="margin-left:42%; cursor:pointer" id="good" name="good" onclick="good(this)"> 
-          <!-- <img src="./image/no_good.png" id="no_good" name="no_good" style="width:60px; height:60px"/> -->
+        <!-- <div style="margin-left:42%; cursor:pointer" onclick="good(this)">
           <img src="./image/no_good.png" id="no_good" style="width:60px; height:60px"/>
           <img src="./image/good.png" id="good" style="width:60px; height:60px" hidden/>
-        </div>
+        </div> -->
+        <?php echo $goodsave;?>
+        <div id="ajax_message" style="margin-left:44%; padding:5px"><b><?php echo $con_good?></b></div>
       </div>
       <br /><br /> 
       <div class="row" style="text-align:center; padding-right:80px;">
@@ -303,23 +317,16 @@ else{
 
     function good(obj) {
 
-
       var xhttp = new XMLHttpRequest();
-      // // Define a callback function
-      // xhttp.onload = function() {
-      //   // Here you can use the Data
-      //   alert(this.responseText);
-      //   if (this.responseText == "Yes") {
-      //     document.getElementById("no_good").src = "./image/good.png";
-      //     document.getElementById("goodchk").value = "true";
 
-      //   } else if (this.responseText == "No") {
-      //     document.getElementById("no_good").src = "./image/no_good.png";
-      //     document.getElementById("goodchk").value = "false";
-      //   } 
-        
-      // }
+            // Define a callback function
+      xhttp.onload = function() {
+        // Here you can use the Data
+        document.getElementById("ajax_message").innerHTML = "<b>" + this.responseText + "</b>";
+      }
 
+      var no_good = document.getElementById("no_good").hidden;
+      var good = document.getElementById("good").hidden;
       if(no_good == false){
         document.getElementById("no_good").hidden = true;
         document.getElementById("good").hidden = false;
@@ -328,14 +335,12 @@ else{
       else {
         document.getElementById("no_good").hidden = false;
         document.getElementById("good").hidden = true;
-        document.getElementById("goodchk").value = "ture";
+        document.getElementById("goodchk").value = "true";
       }
-      
-      // Send a request
-      xhttp.open("GET", "board_action.php?mode=good&user_id=" + document.getElementById("user_id").value + "&con_no=" + document.getElementById("con_no").value + "$goodchk=" + document.getElementById("goodchk").value);
+
+      xhttp.open("GET", "board_action.php?mode=good&user_id=" + document.getElementById("user_id").value + "&con_no=" + document.getElementById("con_no").value + "&goodchk=" + document.getElementById("goodchk").value);
       xhttp.send();
     }
-
   </script>
 </body>
 
