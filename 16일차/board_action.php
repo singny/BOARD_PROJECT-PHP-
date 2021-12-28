@@ -81,7 +81,11 @@ else if($post["mode"] == "write"){
             exit;
         }
         $db->EndTransaction();
+
+
+
         //파일 업로드
+        // $uploadFile = Fun::uploadFile("userfile", "upload_file/{$con_no}");
         mkdir("upload_file/{$con_no}", 0777, true);
         $uploaddir = __DIR__."/upload_file/{$con_no}/";
         $uploadfile = $uploaddir . basename($_FILES['userfile']['name']);
