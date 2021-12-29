@@ -5,7 +5,7 @@ session_start();
 if (!defined("_INCLUDE_")) require_once $_SERVER["DOCUMENT_ROOT"] . "/lib/include.php";
 include "_inc.php";
 @error_reporting(E_ALL);
-if ($_REQUEST["con_no"]) {
+if (@$_REQUEST["con_no"]) {
   $con_no = $_REQUEST["con_no"];
   $db = new DB;
   //$db->Debug = true;
@@ -118,19 +118,34 @@ WHERE b.re_user = u.uno and u.dept_id = de.dept_no and u.duty_id = du.duty_no an
   </div>";
   }
 
-// 댓글
-$user_sql = "SELECT u.user_name, de.dept_name, du.duty_name
-FROM ex_user_set u, ex_dept_set de, board_contents b, ex_duty_set du
-WHERE u.dept_id = de.dept_no and u.duty_id = du.duty_no and u.user_id = '{$_SESSION["user_id"]}'";
-$db->query($user_sql);
-$db->next_record();
-$row[5] = $db->Record;
-$comment_user = "[".$row[5]["dept_name"]."] ".$row[5]["user_name"]." ".$row[5]["duty_name"];
-}
-else{
-  FUN::alert("잘못된 접근입니다.","board_login.php");
-}
+  // 댓글
+  $user_sql = "SELECT u.user_name, de.dept_name, du.duty_name
+              FROM ex_user_set u, ex_dept_set de, board_contents b, ex_duty_set du
+              WHERE u.dept_id = de.dept_no and u.duty_id = du.duty_no and u.user_id = '{$_SESSION["user_id"]}'";
+  $db->query($user_sql);
+  $db->next_record();
+  $row[5] = $db->Record;
+  $comment_user = "[" . $row[5]["dept_name"] . "] " . $row[5]["user_name"] . " " . $row[5]["duty_name"];
 
+  $comment = null;
+  $row["com_body"] = null;
+  $row["com_datetime"] = null;
+  $comment_sql = "SELECT * FROM {$_table_comment} WHERE con_no={$con_no}";
+  $db->query($comment_sql);
+  while ($db->next_record()) {
+    $row[6] = $db->Record;
+    $comment .= "<div class=\"dat_view\">
+                <div><b>{$comment_user}</b></div>
+                <div class=\"dap_to comt_edit\">{$row[6]["com_body"]}</div>
+                <div class=\"rep_me dap_to\">{$row[6]["com_datetime"]}</div>
+                <div class=\"rep_me rep_menu\"style=\"text-align:right\" >
+                  <a class=\"dat_del_btn\" href=\"#\" >삭제</a>
+                </div>
+                </div>";
+  }
+} else {
+  FUN::alert("잘못된 접근입니다.", "board_login.php");
+}
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7" lang="ko"> <![endif]-->
@@ -229,7 +244,7 @@ else{
   <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
   <!-- 합쳐지고 최소화된 최신 CSS -->
   <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"> -->
-  
+
   <!-- 부가적인 테마 -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
 
@@ -639,20 +654,58 @@ else{
       box-sizing: border-box;
       background: var(--skinCommentWriterBg);
     }
+
     textarea {
-    padding: 10px;
-    max-width: 100%;
-    line-height: 1.5;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    box-shadow: 1px 1px 1px #999;
-}
+      padding: 10px;
+      max-width: 100%;
+      line-height: 1.5;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      box-shadow: 1px 1px 1px #999;
+    }
+
+    /* 댓글 css */
+    .reply_view {
+      width: 825px;
+      margin-top: 0px;
+      word-break: break-all;
+    }
+
+    .dat_view {
+      font-size: 14px;
+      padding: 10px 0 15px 0;
+      border-bottom: solid 1px #E0E0E0;
+    }
+
+    .dat_ins {
+      margin-top: 50px;
+    }
+
+    .dat_edit_t {
+      width: 520px;
+      height: 70px;
+      position: absolute;
+      top: 40px;
+    }
+
+    .rep_con {
+      width: 700px;
+      height: 56px;
+    }
+
+    .rep_btn {
+      position: absolute;
+      width: 100px;
+      height: 56px;
+      font-size: 16px;
+      margin-left: 10px;
+    }
   </style>
 </head>
 
 <body>
   <div style="margin-top:5%; margin-left:26%; margin-right:25%">
-    <form>
+    <form method="post" action="board_action.php?mode=comment" id="frm" name="frm">
       <input type="hidden" id="user_id" name="user_id" value="<?php echo $_SESSION["user_id"] ?>" />
       <input type="hidden" id="con_no" name="con_no" value="<?php echo $con_no ?>" />
       <input type="hidden" id="goodchk" name="goodchk" value="false" />
@@ -690,44 +743,51 @@ else{
     <textarea class="form-control" rows="10" id="comment" name="text" style="font-size:medium" disabled readonly><?php echo $row[0]['con_body'] ?></textarea>
     <br /><br />
     <div style="font-size:medium"><?php echo $attach ?></div>
-    <br /><br /><br /><br /> <br /> 
+    <br /><br /><br /><br /> <br />
     <div class="row">
-      <!-- <div style="margin-left:42%; cursor:pointer" onclick="good(this)">
-          <img src="./image/no_good.png" id="no_good" style="width:60px; height:60px"/>
-          <img src="./image/good.png" id="good" style="width:60px; height:60px" hidden/>
-        </div> -->
       <?php echo $goodsave; ?>
       <div id="ajax_message" style="margin-left:44%; padding:5px"><b><?php echo $con_good ?></b></div>
     </div>
-    <br /> <br /> 
+    <br /> <br />
+
     <div class="CommentWriter">
+      <!-- 댓글 불러오기 -->
+      <div>
+        <div class="reply_view">
+          <h3 style="padding:0px 0 15px 0; border-bottom: solid 1px #E0E0E0">댓글목록</h3>
+          <?php echo $comment ?>
+        </div>
+      </div>
+      <!-- 댓글 불러오기 끝 -->
+      <br />
       <div class="comment_inbox">
-        <strong><?php echo $comment_user?></strong>
+        <strong style="font-size:14px"><?php echo $comment_user ?></strong>
 
         <em class="comment_inbox_name"></em>
         <br />
-        <textarea placeholder="댓글을 남겨보세요" class="comment_inbox_text" style="overflow: hidden; overflow-wrap: break-word; height: 70px;"></textarea>
+        <textarea placeholder="댓글을 남겨보세요" id="com_body" name="com_body" class="comment_inbox_text" style="overflow: hidden; overflow-wrap: break-word; height: 70px;"></textarea>
       </div>
       <br />
       <div class="register_box" style="text-align:right">
-        <a href="#" role="button" class="button btn_register" >등록</a>
+        <a role="button" onclick="comment()">등록</a>
       </div>
     </div>
     <br /><br /><br />
     <div class="row" style="text-align:center; padding-right:80px;">
-    <span class="btn2" style="width:min-content">
-      <?php echo $modify_btn ?>
-    </span>
-    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-    <span class="btn1" style="width:min-content">
-      <input type="button" value="목록" onclick="goList()">
-    </span>
-    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-    <span class="btn3" style="width:min-content">
-      <?php echo $delete_btn ?>
-      </form>
-  </div>
-  <br /><br />
+      <span class="btn2" style="width:min-content">
+        <?php echo $modify_btn ?>
+      </span>
+      <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+      <span class="btn1" style="width:min-content">
+        <input type="button" value="목록" onclick="goList()">
+      </span>
+      <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+      <span class="btn3" style="width:min-content">
+        <?php echo $delete_btn ?>
+        </form>
+
+    </div>
+    <br /><br />
 
   </div>
 
@@ -745,6 +805,10 @@ else{
       if (a == true) {
         location.href = "<?php echo $delete_uri; ?>";
       }
+    }
+
+    function comment() {
+      document.getElementById("frm").submit();
     }
 
     function good(obj) {
