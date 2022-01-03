@@ -8,13 +8,34 @@ include "_inc.php";
 $db = new DB;
 
 
-$score_sql = "SELECT ROWNUM AS RANK ,RE_USER, SCORE FROM (SELECT * FROM V_SCORE21 ORDER BY SCORE DESC) WHERE ROWNUM <= 5";
+
+if (@$_GET["con_year"] == 2021) {
+    $_table_score = "V_SCORE21";
+    $count_sql = "SELECT COUNT(*) FROM {$_table_score}";
+    $n = $db->query_one($count_sql);
+    if ($n < 5) {
+        FUN::alert("데이터가 부족합니다.", "board_chart.php?con_year=2022");
+    }
+    $_sel21 = "selected";
+    $_sel22 = "";
+} else {
+    $_table_score = "V_SCORE22";
+    $count_sql = "SELECT COUNT(*) FROM {$_table_score}";
+    $n = $db->query_one($count_sql);
+    if ($n < 5) {
+        FUN::alert("현재년도의 데이터가 부족합니다.", "board_chart.php?con_year=2021");
+    }
+    $_sel21 = "";
+    $_sel22 = "selected";
+}
+
+$score_sql = "SELECT ROWNUM AS RANK ,RE_USER, SCORE FROM (SELECT * FROM {$_table_score} ORDER BY SCORE DESC) WHERE ROWNUM <= 5";
 $db->query($score_sql);
 $row = $db->RecordAll;
 
 for ($i = 0; $i <= 5; $i++) {
     $re_sql = "SELECT u.user_name, de.dept_name, du.duty_name, v.re_user, b.con_no
-FROM ex_user_set u, ex_dept_set de, ex_duty_set du, v_score21 v, board_contents b
+FROM ex_user_set u, ex_dept_set de, ex_duty_set du, {$_table_score} v, board_contents b
 WHERE u.uno = {$row[$i]["RE_USER"]} and u.dept_id = de.dept_no and u.duty_id = du.duty_no";
 
     $db->query($re_sql);
@@ -40,31 +61,51 @@ if (@$_SESSION["user_id"] == "admin") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>부트스트랩 차트그리기</title>
+    <title>우수직원 순위현황</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> <!-- 차트 링크 -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Pen+Script&family=Poor+Story&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <link rel="apple-touch-icon" sizes="57x57" href="../image/icon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="image/icon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="image/icon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="image/icon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="image/icon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="image/icon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="image/icon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="image/icon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="image/icon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="image/icon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="image/icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="image/icon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="image/icon/favicon-16x16.png">
     <style>
         body {
             font-family: 'Jua', sans-serif;
         }
+
         .container {
             padding-top: 4%;
-            width: 1100px;
+            width: 900px;
             position: absolute;
-            left: 300px;
-            top: 160px;
+            left: 380px;
+            top: 250px;
+
         }
 
         @media(min-width:1900px) {
             .container {
                 padding-top: 4%;
                 position: absolute;
-            left: 250px;
-            top: 200px;
-            margin-left:13%
+                left: 250px;
+                top: 250px;
+                margin-left: 13%;
+                width: 1095px;
+                height: 547px;
             }
         }
 
@@ -81,6 +122,7 @@ if (@$_SESSION["user_id"] == "admin") {
 
             }
         }
+
         ul {
             list-style-type: none;
             margin: 0;
@@ -117,16 +159,25 @@ if (@$_SESSION["user_id"] == "admin") {
             border-radius: 4px;
             cursor: pointer;
         }
-        
+
         input[type=submit]:hover {
             background-color: #4682B4;
 
+        }
+
+        .container-fluid {
+            margin-left: 46%;
+            width: 400px;
+            position: absolute;
+            left: 300px;
+            top: 200px;
+            margin-top: 10px;
         }
     </style>
 </head>
 
 <body>
-<ul>
+    <ul>
         <li><a href="board_list.php">우수직원 게시판</a></li>
         <li><a class="active" href="board_chart.php">우수직원 순위현황</a></li>
         <?php echo $user_mng ?>
@@ -134,43 +185,110 @@ if (@$_SESSION["user_id"] == "admin") {
   <li><a href="#">자유게시판</a></li> -->
     </ul>
 
-  <div class="container-fluid" style="margin-left:70%; padding:20px;">
-    <form class="d-flex" method="get" aciton="<?php echo $_SERVER["SCRIPT_NAME"] ?>">
-      <select id="con_year" name="con_year" class="form-select" aria-label="Default select example">
-        <option value="2022">2022</option>
-        <option value="2021">2021</option>
-        </select>
-&nbsp;
-      <button type="submit">Search</button>
-    </form>
-  </div>
+
 
     <div class="logo">
-    <div style="margin-left:10%;padding:1px 16px;height:900px;">
-        <img src="./image/chart.png" style="max-width:900px" onclick="location.href='board_chart.php'" />
-
+        <br /><br />
+        <div style="margin-left:10%;padding:1px 16px;height:900px;">
+            <img src="./image/chart.png" style="max-width:900px" onclick="location.href='board_chart.php'" />
+        </div>
     </div>
-    <!-- <div style="position:absolute;left:700px;top:250px"><img src="./image/hidden.png"></div> -->
-    <div class="container"> <canvas id="myChart21"></canvas> </div>
-    <div class="container" hidden> <canvas id="myChart22"></canvas> </div> <!-- 부트스트랩 -->
-    <!-- <div>        
-        <select id="con_year" name="con_year" style="width:175px; height:30px; margin-left:30%">
-                    <option value="2022" >2022</option>
-                    <option value="2021" >2021</option>
-        </select>
-    </div> -->
+    <div class="container-fluid">
+        <form class="d-flex" method="get" aciton="<?php echo $_SERVER["SCRIPT_NAME"] ?>">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                점수기준
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">점수 기준</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            추천 게시글 수 * 5<br />
+                            추천 게시글에 달린 댓글의 수 * 3<br />
+                            추천 게시글의 좋아요 수 * 2<br />
+                            추천 게시글의 조회수 * 1<br />
+                            <br />
+                            -------------------------------<br />
+                            <br />
+                            위 항목의 합산으로 점수가 책정됩니다.
+                            <br />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            &nbsp;
+            <select id="con_year" name="con_year" class="form-select" aria-label="Default select example" style="width:min-content">
+                <option value="2022" <?php echo $_sel22 ?>>2022</option>
+                <option value="2021" <?php echo $_sel21 ?>>2021</option>
+            </select>
+            &nbsp;
+            <button type="submit" class="btn btn-secondary">Search</button>
+        </form>
+    </div>
+    <div class="container"> <canvas id="myChart"></canvas> </div>
+
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Launch demo modal
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Modal body text goes here.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> <!-- 차트 -->
     <script>
-        var ctx21 = document.getElementById('myChart21');
-        var myChart21 = new Chart(ctx21, {
+        var ctx = document.getElementById('myChart');
+        var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: ['1등 : <?php echo $re_user[0] ?>', '2등 : <?php echo $re_user[1] ?>', '3등 : <?php echo $re_user[2] ?>', '4등 : <?php echo $re_user[3] ?>', '5등 : <?php echo $re_user[4] ?>'],
                 datasets: [{
-                    label: '',
+                    label: 'Score',
                     data: [<?php echo $row[0]["SCORE"] ?>, <?php echo $row[1]["SCORE"] ?>, <?php echo $row[2]["SCORE"] ?>, <?php echo $row[3]["SCORE"] ?>, <?php echo $row[4]["SCORE"] ?>],
                     backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)'],
                     borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'],
@@ -188,29 +306,13 @@ if (@$_SESSION["user_id"] == "admin") {
             }
         });
 
-        var ctx22 = document.getElementById('myChart22');
-        var myChart22 = new Chart(ctx22, {
-            type: 'bar',
-            data: {
-                labels: ['1등 : <?php echo $re_user[0] ?>', '2등 : <?php echo $re_user[1] ?>', '3등 : <?php echo $re_user[2] ?>', '4등 : <?php echo $re_user[3] ?>', '5등 : <?php echo $re_user[4] ?>'],
-                datasets: [{
-                    label: '',
-                    data: [<?php echo $row[0]["SCORE"] ?>, <?php echo $row[1]["SCORE"] ?>, <?php echo $row[2]["SCORE"] ?>, <?php echo $row[3]["SCORE"] ?>, <?php echo $row[4]["SCORE"] ?>],
-                    backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)'],
-                    borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
-            }
-        });
+
+        var myModal = document.getElementById('myModal')
+        var myInput = document.getElementById('myInput')
+
+        myModal.addEventListener('shown.bs.modal', function() {
+            myInput.focus()
+        })
     </script>
 </body>
 
