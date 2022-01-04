@@ -153,7 +153,9 @@ WHERE b.re_user = u.uno and u.dept_id = de.dept_no and u.duty_id = du.duty_no an
       $com_body = Fun::convDB2Val($row[6]["com_body"]);
       $nl_combody = nl2br($com_body);
       $comment .= "<div class=\"dat_view\" >
-                    <form method=\"post\" id=\"frm{$row[6]["com_no"]}\" name=\"frm{$row[6]["com_no"]}\" action=\"board_action.php?mode=cmt_modify\">
+                    <form method=\"post\" id=\"frm{$row[6]["com_no"]}\" name=\"frm{$row[6]["com_no"]}\" action=\"board_action.php?mode=cmt_modify&com_no={$row[6]["com_no"]}&con_no={$con_no}\">
+                      <input type=\"hidden\" id=\"com_no\" value=\"{$row[6]["com_no"]}\" />
+                      <input type=\"hidden\" id=\"con_no\" value=\"{$con_no}\" />
                       <div><b>{$commented_user}</b></div>
                       <span id=\"register{$row[6]["com_no"]}\">
                         <div class=\"dap_to comt_edit\" style=\"padding-top:5px;\">{$nl_combody}</div>
@@ -164,8 +166,6 @@ WHERE b.re_user = u.uno and u.dept_id = de.dept_no and u.duty_id = du.duty_no an
                         </div>
                       </span>
                       <span id=\"modify{$row[6]["com_no"]}\" hidden>
-                            <input type=\"hidden\" id=\"com_no\" value=\"{$row[6]["com_no"]}\" />
-                            <input type=\"hidden\" id=\"con_no\" value=\"{$con_no}\" />
                             <textarea id=\"com_body{$row[6]["com_no"]}\" name=\"com_body\" class=\"comment_inbox_text\" style=\"overflow: hidden; overflow-wrap: break-word; height: 70px;\">{$com_body}</textarea>
                           <br />  
                           <div class=\"register_box\" style=\"text-align:right\" >
@@ -744,12 +744,7 @@ WHERE b.re_user = u.uno and u.dept_id = de.dept_no and u.duty_id = du.duty_no an
 
 <body>
   <div style="margin-top:5%; margin-left:26%; margin-right:25%">
-    <form method="post" action="board_action.php?mode=comment" id="frm" name="frm">
-      <input type="hidden" id="user_id" name="user_id" value="<?php echo $_SESSION["user_id"] ?>" />
-      <input type="hidden" id="con_no" name="con_no" value="<?php echo $con_no ?>" />
-      <input type="hidden" id="goodchk" name="goodchk" value="false" />
-      <input type="hidden" id="com_en" name="com_en" value="<?php echo $row[8]["com_en"] ?>" />
-      <input type="hidden" id="scroll" name="scroll" value="<?php echo $row[8]["scroll"] ?>" />
+
       <div class="gallview_head clear ub-content">
         <!-- 모바일에서 작성 icon_write_mbl -->
         <h3 class="title ub-word">
@@ -779,8 +774,6 @@ WHERE b.re_user = u.uno and u.dept_id = de.dept_no and u.duty_id = du.duty_no an
     <div style="font-size:large; padding:10px">
       <h4><b>추천사원 : <?php echo $re_user ?></b></h4>
     </div>
-    <!-- <textarea class="form-control" rows="10" id="comment" name="text" style="font-size:medium" disabled readonly><?php //echo $row[0]['con_body'] 
-                                                                                                                      ?></textarea> -->
     <div class="CommentWriter" style="font-size:large">
       <?php echo nl2br($row[0]['con_body']) ?>
       <div style="font-size:medium"><?php echo $attach ?></div>
@@ -805,6 +798,12 @@ WHERE b.re_user = u.uno and u.dept_id = de.dept_no and u.duty_id = du.duty_no an
       <footer></footer>
       <!-- 댓글 불러오기 끝 -->
       <br />
+      <form method="post" action="board_action.php?mode=comment" id="frm" name="frm">
+      <input type="hidden" id="user_id" name="user_id" value="<?php echo $_SESSION["user_id"] ?>" />
+      <input type="hidden" id="con_no" name="con_no" value="<?php echo $con_no ?>" />
+      <input type="hidden" id="goodchk" name="goodchk" value="false" />
+      <input type="hidden" id="com_en" name="com_en" value="<?php echo $row[8]["com_en"] ?>" />
+      <input type="hidden" id="scroll" name="scroll" value="<?php echo $row[8]["scroll"] ?>" />
       <div class="comment_inbox">
         <strong style="font-size:14px"><?php echo $comment_user ?></strong>
 
@@ -883,8 +882,7 @@ WHERE b.re_user = u.uno and u.dept_id = de.dept_no and u.duty_id = du.duty_no an
       } else {
         var scrollPosition = window.scrollY || document.documentElement.scrollTop;
         document.getElementById("scroll").value = scrollPosition;
-        alert("frm" + com_no);
-        //document.getElementById("frm"+com_no).submit();
+        document.getElementById("frm"+com_no).submit();
       }
     }
 
