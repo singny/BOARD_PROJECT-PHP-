@@ -150,33 +150,36 @@ WHERE b.re_user = u.uno and u.dept_id = de.dept_no and u.duty_id = du.duty_no an
 
     if ($_SESSION["user_id"] == $row[6]["user_id"] || $_SESSION["user_id"] == "admin") {
       $commented_user = "[" . $row[6]["dept_name"] . "] " . $row[6]["user_name"] . " " . $row[6]["duty_name"];
+      $com_body = Fun::convDB2Val($row[6]["com_body"]);
+      $nl_combody = nl2br($com_body);
       $comment .= "<div class=\"dat_view\" >
-                <div><b>{$commented_user}</b></div>
-
-                <div class=\"{$row[6]["com_no"]}\">
-                <div class=\"dap_to comt_edit\" style=\"padding-top:5px;\">{$row[6]["com_body"]}</div>
-                <div class=\"rep_me dap_to\" style=\"color:#C0C0C0; font-size:smaller\">{$row[6]["com_datetime"]}</div>
-                <div class=\"rep_me rep_menu\"style=\"text-align:right; \" >
-                  <a class=\"dat_del_btn\" role=\"button\" onclick=\"cmtDelete(this)\">수정</a>&nbsp;&nbsp;
-                  <a class=\"dat_del_btn\" role=\"button\" id=\"{$row[6]["com_no"]}\" onclick=\"cmtDelete(this)\">삭제</a>
-                <div>
-                
-                  <div class=\"comment_inbox\" hidden>
-                  <em class=\"comment_inbox_name\"></em>
-                  <br />
-                  <textarea id=\"com_body\" name=\"com_body\" class=\"comment_inbox_text\" style=\"overflow: hidden; overflow-wrap: break-word; height: 70px;\"></textarea>
-                </div>
-                <br />
-                <div class=\"register_box\" style=\"text-align:right\" hidden>
-                  <a role=\"button\" onclick=\"comment()\">수정</a>
-                </div>
-                </div>
-                </div>";
+                    <form method=\"post\" id=\"frm{$row[6]["com_no"]}\" name=\"frm{$row[6]["com_no"]}\" action=\"board_action.php?mode=cmt_modify\">
+                      <div><b>{$commented_user}</b></div>
+                      <span id=\"register{$row[6]["com_no"]}\">
+                        <div class=\"dap_to comt_edit\" style=\"padding-top:5px;\">{$nl_combody}</div>
+                        <div class=\"rep_me dap_to\" style=\"color:#C0C0C0; font-size:smaller\">{$row[6]["com_datetime"]}</div>
+                        <div class=\"rep_me rep_menu\"style=\"text-align:right; \" >
+                          <a class=\"dat_del_btn\" role=\"button\" id=\"{$row[6]["com_no"]}\" onclick=\"cmtModify(this)\">수정</a>&nbsp;&nbsp;
+                          <a class=\"dat_del_btn\" role=\"button\" id=\"{$row[6]["com_no"]}\" onclick=\"cmtDelete(this)\">삭제</a>
+                        </div>
+                      </span>
+                      <span id=\"modify{$row[6]["com_no"]}\" hidden>
+                            <input type=\"hidden\" id=\"com_no\" value=\"{$row[6]["com_no"]}\" />
+                            <input type=\"hidden\" id=\"con_no\" value=\"{$con_no}\" />
+                            <textarea id=\"com_body{$row[6]["com_no"]}\" name=\"com_body\" class=\"comment_inbox_text\" style=\"overflow: hidden; overflow-wrap: break-word; height: 70px;\">{$com_body}</textarea>
+                          <br />  
+                          <div class=\"register_box\" style=\"text-align:right\" >
+                            <a role=\"button\" id=\"{$row[6]["com_no"]}\" onclick=\"modifyCmt(this)\">수정완료</a>
+                          </div>
+                      </span>
+                    </form>
+                  </div>";
     } else {
       $commented_user = "[" . $row[6]["dept_name"] . "] " . $row[6]["user_name"] . " " . $row[6]["duty_name"];
+      $com_body = nl2br($row[6]["com_body"]);
       $comment .= "<div class=\"dat_view\" >
                   <div><b>{$commented_user}</b></div>
-                  <div class=\"dap_to comt_edit\" style=\"padding-top:5px;\">{$row[6]["com_body"]}</div>
+                  <div class=\"dap_to comt_edit\" style=\"padding-top:5px;\">{$com_body}</div>
                   <div class=\"rep_me dap_to\" style=\"color:#C0C0C0; font-size:smaller\">{$row[6]["com_datetime"]}</div>
                   <div>&nbsp;</div>
                   </div>";
@@ -191,7 +194,6 @@ WHERE b.re_user = u.uno and u.dept_id = de.dept_no and u.duty_id = du.duty_no an
   $db->query($scroll_sql);
   $db->next_record();
   @$row[8] = $db->Record;
-
 } else {
   FUN::alert("잘못된 접근입니다.", "board_login.php");
 }
@@ -274,7 +276,7 @@ WHERE b.re_user = u.uno and u.dept_id = de.dept_no and u.duty_id = du.duty_no an
 
   <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
   <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script> -->
-  
+
   <!-- Taboola -->
   <script type="text/javascript">
     window._taboola = window._taboola || [];
@@ -777,13 +779,14 @@ WHERE b.re_user = u.uno and u.dept_id = de.dept_no and u.duty_id = du.duty_no an
     <div style="font-size:large; padding:10px">
       <h4><b>추천사원 : <?php echo $re_user ?></b></h4>
     </div>
-    <!-- <textarea class="form-control" rows="10" id="comment" name="text" style="font-size:medium" disabled readonly><?php //echo $row[0]['con_body'] ?></textarea> -->
+    <!-- <textarea class="form-control" rows="10" id="comment" name="text" style="font-size:medium" disabled readonly><?php //echo $row[0]['con_body'] 
+                                                                                                                      ?></textarea> -->
     <div class="CommentWriter" style="font-size:large">
-    <?php echo nl2br($row[0]['con_body']) ?>
-    <div style="font-size:medium"><?php echo $attach ?></div>
+      <?php echo nl2br($row[0]['con_body']) ?>
+      <div style="font-size:medium"><?php echo $attach ?></div>
     </div>
     <br /><br />
-    
+
 
     <div class="row">
       <?php echo $goodsave; ?>
@@ -832,7 +835,6 @@ WHERE b.re_user = u.uno and u.dept_id = de.dept_no and u.duty_id = du.duty_no an
     <br /><br />
 
   </div>
-
   <script type="text/javascript">
     window.onload = function() {
       if (document.getElementById("com_en").value == 'Y') {
@@ -871,12 +873,35 @@ WHERE b.re_user = u.uno and u.dept_id = de.dept_no and u.duty_id = du.duty_no an
       }
     }
 
+    function modifyCmt(c) {
+
+      var com_no = document.getElementById(c.getAttribute('id')).getAttribute('id');
+      var com_body = document.getElementById("com_body" + com_no).value
+      if (com_body == '') {
+        alert("내용을 입력하세요.");
+        document.getElementById("com_body" + com_no).focus();
+      } else {
+        var scrollPosition = window.scrollY || document.documentElement.scrollTop;
+        document.getElementById("scroll").value = scrollPosition;
+        alert("frm" + com_no);
+        //document.getElementById("frm"+com_no).submit();
+      }
+    }
+
     function cmtDelete(c) {
       var com_no = document.getElementById(c.getAttribute('id')).getAttribute('id');
       var a = confirm("댓글을 삭제하시겠습니까?");
       if (a == true) {
         location.href = 'board_action.php?mode=cmt_delete&com_no=' + com_no + '&con_no=<?php echo $con_no ?>';
       }
+    }
+
+    function cmtModify(c) {
+      var com_no = document.getElementById(c.getAttribute('id')).getAttribute('id');
+
+      document.getElementById('register' + com_no).hidden = true;
+      document.getElementById('modify' + com_no).hidden = false;
+      document.getElementById("com_body" + com_no).focus();
     }
 
     function good(obj) {
