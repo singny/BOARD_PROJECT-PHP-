@@ -9,9 +9,9 @@ include_once "_inc.php";
 
 $db = new DB;
 
-$user_sql = "SELECT user_id, user_name, dept_id, duty_id, loc_id, uno
+$user_sql = "SELECT user_id, user_name, dept_id, duty_id, loc_id
             FROM ex_user_set
-            WHERE user_id='{$_SESSION["user_id"]}'";
+            WHERE uno='{$post["uno"]}'";
 $db->query($user_sql);
 while ($db->next_record()) {
   $row[3] = $db->Record;
@@ -19,8 +19,7 @@ while ($db->next_record()) {
   $user_name = $row[3]["user_name"];
 }
 
-$uno = $row[3]["uno"];
-
+$uno = $post["uno"];
 $dept_id = null;
 $sql = "SELECT * FROM {$_table_dept} WHERE LEVEL_NO=2 OR LEVEL_NO=3 OR LEVEL_NO=4";
 $opt_dept_id = null;
@@ -76,22 +75,22 @@ if ($db->nf() > 0) {
   }
 }
 
+
 // 유저 사진
 $file_sql = "SELECT UNO, FILE_PATH FROM {$_table_user} WHERE UNO = {$uno}";
 $db->query($file_sql);
-while($db->next_record()){
+while ($db->next_record()) {
   $row[4] = $db->Record;
 }
 
 @$file_name = basename($row[4]["FILE_PATH"]);
 $user_img = null;
 
-if($file_name){
-  $user_img = "<img src=\"./upload_file/user/{$uno}/$file_name\" width=\"125px\" height=\"150px\"  alt=\"\">";
-}else{
-  $user_img = "<img src=\"./image/noimg.png\" id=\"image\" width=\"125px\" height=\"150px\" />";
+if ($file_name) {
+  $user_img = "<img src=\"../upload_file/user/{$uno}/$file_name\" width=\"125px\" height=\"150px\"  alt=\"\">";
+} else {
+  $user_img = "<img src=\"../image/noimg.png\" id=\"image\" width=\"125px\" height=\"150px\" />";
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="ko">
@@ -100,26 +99,26 @@ if($file_name){
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Page</title>
+  <title>회원 정보</title>
 
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Pen+Script&family=Poor+Story&display=swap" rel="stylesheet">
-  <link rel="apple-touch-icon" sizes="57x57" href="image/icon/apple-icon-57x57.png">
-  <link rel="apple-touch-icon" sizes="60x60" href="image/icon/apple-icon-60x60.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="image/icon/apple-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="76x76" href="image/icon/apple-icon-76x76.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="image/icon/apple-icon-114x114.png">
-  <link rel="apple-touch-icon" sizes="120x120" href="image/icon/apple-icon-120x120.png">
-  <link rel="apple-touch-icon" sizes="144x144" href="image/icon/apple-icon-144x144.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="image/icon/apple-icon-152x152.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="image/icon/apple-icon-180x180.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="image/icon/android-icon-192x192.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="image/icon/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="96x96" href="image/icon/favicon-96x96.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="image/icon/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="57x57" href="../image/icon/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="../image/icon/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="../image/icon/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="../image/icon/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="../image/icon/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="../image/icon/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="../image/icon/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="../image/icon/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../image/icon/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../image/icon/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../image/icon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="../image/icon/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../image/icon/favicon-16x16.png">
   <style>
     body {
       min-height: 100vh;
@@ -133,6 +132,8 @@ if($file_name){
       background-repeat: no-repeat;
       background-size: cover;
       font-family: 'Jua', sans-serif;
+
+
     }
 
     .input-form {
@@ -181,13 +182,13 @@ if($file_name){
   <div class="container">
     <div class="input-form-backgroud row">
       <div class="input-form col-md-12 mx-auto">
-        <h4 class="mb-3">My page</h4>
+        <h4 class="mb-3">회원 정보</h4>
         <br />
-        <form class="validation-form" novalidate method="post" action="board_user_modify.php?mode=modify" enctype= "multipart/form-data">
-          <input type="hidden" id="uno" name="uno" value="<?php echo $row[3]["uno"]?>">
+        <form class="validation-form" novalidate method="post" action="../board_user_modify.php?mode=user_modify" enctype="multipart/form-data">
+          <input type="hidden" id="uno" name="uno" value="<?php echo $uno ?>">
           <div class="row">
             <div class="col-md-6 mb-3">
-              <label for="user_id" style="vertical-align:bottom">아이디</label>
+              <label for="user_id">아이디</label>
               <input type="text" class="form-control" id="user_id" name="user_id" value="<?php echo $user_id ?>" disalbed readonly onfocus="this.blur()" required>
               <div class="invalid-feedback">
                 아이디를 입력해주세요.
@@ -202,9 +203,9 @@ if($file_name){
             <div class="col-md-6 mb-3" style="text-align:right; padding-right:7%">
               <label for="img">사진</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <!-- <img src="./image/noimg.png" id="image" width="125px" height="150px" /> -->
-              <?php echo $user_img?>
+              <?php echo $user_img ?>
               <div id="change_img" hidden>
-                <input type="file" name="uploadfile" id="img" style="display:none;" accept="image/gif,image/jpeg,image/png" onchange="previewFile()"/>
+                <input type="file" name="uploadfile" id="img" style="display:none;" accept="image/gif,image/jpeg,image/png" onchange="previewFile()" />
                 <label for="img" style="background-color:cadetblue;border-radius: 5px; margin-right:4%; margin-top:2px; padding:2px; cursor:pointer">이미지 변경하기</label>
               </div>
             </div>
@@ -277,7 +278,7 @@ if($file_name){
             <label for="aggrement"><b>정보수정 mode</b></label>
           </div>
           <div class="mb-4"></div>
-          <input type="button" id="ok" name="ok" onclick="complete()" value="확인" />
+          <input type="button" id="ok" name="ok" onclick="complete()" value="회원 목록" />
           <button class="btn btn-primary btn-lg btn-block" id="modify_btn" name="modify_btn" type="submit" onclick="modifyComplete()" hidden>수정 완료</button>
         </form>
       </div>
@@ -299,7 +300,7 @@ if($file_name){
     }, false);
 
     function complete() {
-      location.href = "board_list.php";
+      location.href = "user_list.php";
     }
 
     function modifyComplete() {
@@ -314,14 +315,6 @@ if($file_name){
         event.preventDefault();
         event.stopPropagation();
       }
-    }
-
-    function id_chk() {
-      var user_id = document.getElementById("user_id").value;
-
-      url = "board_id_chk.php?user_id=" + user_id;
-      window.open(url, "chkid", "width=300,height=150,top=250,left=1000,scrollbars=no,toolbar=no,menubar=no,location=no,directories=no,resizable=no, status=no");
-
     }
 
     function modifyMode() {
@@ -366,6 +359,7 @@ if($file_name){
         location.href = "board_user_modify.php?mode=delete";
       }
     }
+
 
     function previewFile() {
             var preview = document.querySelector('img');
