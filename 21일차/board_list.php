@@ -59,27 +59,44 @@ $str_data_row = null;
 if ($query_row_count > 0) {
     $i = 0;
     while ($db->next_record()) {
-          // 시간
-          $row = $db->Record;
+        // 시간
+        $row = $db->Record;
         $datetime = explode(" ", $row["con_datetime"]);
-        $date = explode(".",$datetime[0]);
-        $time = explode(":",$datetime[1]);
-        $datetype = date("Y-m-d H:i:s",mktime($time[0],$time[1],$time[2],$date[1],$date[2],$date[0]));
+        $date = explode(".", $datetime[0]);
+        $time = explode(":", $datetime[1]);
+        $datetype = date("Y-m-d H:i:s", mktime($time[0], $time[1], $time[2], $date[1], $date[2], $date[0]));
         $backdate = date("Y-m-d H:i:s");
 
         $start_date = new DateTime($datetype);
         $end_date = new DateTime($backdate);
 
-        $diff = date_diff($start_date,$end_date);
+        $diff = date_diff($start_date, $end_date);
 
-        if($diff->days >= 1){
+        if ($diff->days >= 1) {
 
             $no = $count - $nav->start_row - $i;
             $date = substr($row["con_datetime"], 0, 10);
             $dept_user = "[" . $row["dept_name"] . "] " . $row["user_name"] . " " . $row["duty_name"];
-            $con_title = $row["con_title"]. " [".$row["con_comment"]."]";
+            $con_title = $row["con_title"] . " [" . $row["con_comment"] . "]";
             $list_query = Fun::getParamUrl();
-    
+
+            $str_data_row .= "              
+            <tr onclick=\"location.href='board_view.php?{$list_query}&con_no={$row["con_no"]}'\" style=\"cursor:pointer\">
+                <td style=\"text-align: center;\">{$no}</td>
+                <td style=\"text-align: center;\">{$date}</td>
+                <td>{$con_title}</td>
+                <td>{$dept_user}</td>
+                <td style=\"text-align: center;\">{$row["con_vc"]}</td>
+                <td style=\"text-align: center;\">{$row["con_good"]}</td>
+            </tr>";
+            $i++;
+        } else {
+            $no = $count - $nav->start_row - $i;
+            $date = substr($row["con_datetime"], 0, 10);
+            $dept_user = "[" . $row["dept_name"] . "] " . $row["user_name"] . " " . $row["duty_name"];
+            $con_title = $row["con_title"] . " <img src=\"./image/new.png\" width=\"25px\" height=\"25px\" /> [" . $row["con_comment"] . "] ";
+            $list_query = Fun::getParamUrl();
+
             $str_data_row .= "              
             <tr onclick=\"location.href='board_view.php?{$list_query}&con_no={$row["con_no"]}'\" style=\"cursor:pointer\">
                 <td style=\"text-align: center;\">{$no}</td>
@@ -91,25 +108,6 @@ if ($query_row_count > 0) {
             </tr>";
             $i++;
         }
-        else{
-            $no = $count - $nav->start_row - $i;
-            $date = substr($row["con_datetime"], 0, 10);
-            $dept_user = "[" . $row["dept_name"] . "] " . $row["user_name"] . " " . $row["duty_name"];
-            $con_title = $row["con_title"]. " <img src=\"./image/new.png\" width=\"25px\" height=\"25px\" /> [".$row["con_comment"]."] ";
-            $list_query = Fun::getParamUrl();
-    
-            $str_data_row .= "              
-            <tr onclick=\"location.href='board_view.php?{$list_query}&con_no={$row["con_no"]}'\" style=\"cursor:pointer\">
-                <td style=\"text-align: center;\">{$no}</td>
-                <td style=\"text-align: center;\">{$date}</td>
-                <td>{$con_title}</td>
-                <td>{$dept_user}</td>
-                <td style=\"text-align: center;\">{$row["con_vc"]}</td>
-                <td style=\"text-align: center;\">{$row["con_good"]}</td>
-            </tr>";
-            $i++;
-        }
-
     }
 } else {
     $str_data_row = '      
@@ -155,7 +153,7 @@ $db->commit();
 <html>
 
 <head>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -181,6 +179,14 @@ $db->commit();
             font-family: 'Jua', sans-serif;
         }
 
+        @media(max-width:500px) {
+            body {
+                font-family: 'Jua', sans-serif;
+                font-size: xx-small;
+            }
+        }
+
+
         table.type07 {
             border-collapse: collapse;
             text-align: left;
@@ -189,14 +195,26 @@ $db->commit();
             margin: 0px 225px;
         }
 
-        @media(min-width:1900px){
-        table.type07 {
+        @media(min-width:1900px) {
+            table.type07 {
             border-collapse: collapse;
             text-align: left;
             line-height: 1.5;
             border: 1px solid #ccc;
             margin: 0px 400px;
                 }
+        }
+
+        @media(max-width:500px) {
+            table.type07 {
+                border-collapse: collapse;
+                text-align: left;
+                line-height: 1.5;
+                border: 1px solid #ccc;
+                margin: 0px 300px;
+                font-size: xx-small;
+                width: 600px;
+            }
         }
 
         table.type07 thead {
@@ -236,7 +254,7 @@ $db->commit();
             border-radius: 4px;
             cursor: pointer;
         }
-        
+
         input[type=button]:hover {
             background-color: #4682B4;
 
@@ -257,6 +275,20 @@ $db->commit();
             overflow: auto;
         }
 
+        @media(max-width:500px) {
+            ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                width: 11%;
+                background-color: #F0F8FF;
+                position: fixed;
+                height: 100%;
+                overflow: auto;
+                font-size: xx-small;
+            }
+        }
+
         li a {
             display: block;
             color: #000;
@@ -275,46 +307,56 @@ $db->commit();
         }
 
         li img {
-            padding-top:20px; 
+            padding-top: 20px;
             padding-left: 40px;
-            width:150px
+            width: 150px
         }
 
-        @media(min-width:1900px){
+        @media(min-width:1900px) {
             li img {
-            padding-top:20px; 
-            padding-left: 40px;
-            width:200px
+                padding-top: 20px;
+                padding-left: 40px;
+                width: 200px
+            }
         }
+
+        @media(max-width:500px) {
+            li img {
+                padding-top: 10px;
+                padding-left: 10px;
+                width: 100px
+            }
         }
+
         .col-25 {
             float: left;
             width: 10%;
             margin-top: 7px;
             margin-left: 32%;
         }
-        @media(min-width:1900px){
-        .col-25 {
-            float: left;
-            width: 10%;
-            margin-top: 7px;
-            margin-left: 32%;
-                }
+
+        @media(min-width:1900px) {
+            .col-25 {
+                float: left;
+                width: 10%;
+                margin-top: 7px;
+                margin-left: 32%;
+            }
         }
-        
+
         .col-75 {
             float: left;
             width: 37%;
             margin-top: 6px;
-            margin-bottom : 30px;
+            margin-bottom: 30px;
         }
 
-        @media(min-width:1900px){
+        @media(min-width:1900px) {
             .col-75 {
                 float: left;
-            width: 26.5%;
-            margin-top: 6px;
-                }
+                width: 26.5%;
+                margin-top: 6px;
+            }
         }
 
         .col-50 {
@@ -330,31 +372,79 @@ $db->commit();
         }
 
         .page {
-            margin-left:16.5%;
+            margin-left: 16.5%;
             background-image: url('./image/hello.jpg');
-             padding:8px;
-             border-radius: 4px;
+            padding: 8px;
+            border-radius: 4px;
         }
 
-        @media(min-width:1900px){
+        @media(min-width:1900px) {
             .page {
-                margin-left:23.5%;
-            background-image: url('./image/hello.jpg');
-             padding:8px;
-             border-radius: 4px;
-                }
+                margin-left: 23.5%;
+                background-image: url('./image/hello.jpg');
+                padding: 8px;
+                border-radius: 4px;
+            }
         }
 
         .write {
-            text-align:right; 
-            margin-right:16.5%
+            text-align: right;
+            margin-right: 16.5%
         }
 
-        @media(min-width:1900px){
+        @media(min-width:1900px) {
             .write {
-            text-align:right; 
-            margin-right:23.5%
-                }
+                text-align: right;
+                margin-right: 23.5%
+            }
+        }
+
+        .logo {
+            max-width: 900px
+        }
+
+        @media(max-width:500px) {
+            .logo {
+                max-width: 600px;
+                margin-left: 315px
+            }
+        }
+
+        .container {
+            margin-left: 8%;
+            padding: 1px 16px;
+            height: 900px;
+        }
+
+        @media(max-width:500px) {
+            .container {
+                padding: 1px 16px;
+                height: 640px;
+            }
+        }
+
+        .hello {
+            background-image: url('./image/hello.jpg');
+            padding: 8px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        @media(max-width:500px) {
+            .hello {
+            background-image: url('./image/hello.jpg');
+            padding: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        }
+        .my_out{
+            margin-left:63%;
+        }
+        @media(max-width:500px) {
+            .my_out{
+            margin-left:150px;
+        }
         }
     </style>
 </head>
@@ -369,19 +459,19 @@ $db->commit();
         <!-- <li><a href="#">소개</a></li>
   <li><a href="#">자유게시판</a></li> -->
     </ul>
-    <div style="margin-left:8%;padding:1px 16px;height:900px;">
+    <div class="container">
         <br />
-        
-        <span style="margin-left:63%;">
-            <span style="background-image: url('./image/hello.jpg'); padding:8px;border-radius: 4px; cursor:pointer;" title="마이페이지" onclick="location.href='my_page.php';"><b><?php echo $hello ?></b></span>
+
+        <span class="my_out">
+            <span class="hello" title="마이페이지" onclick="location.href='my_page.php';"><b><?php echo $hello ?></b></span>
             &nbsp;<input type="button" onclick="logout()" value="로그아웃" />
         </span>
         <br /><br />
         <div style="text-align:center; cursor:pointer;">
-            <img src="./image/logo3.png" style="max-width:900px" onclick="location.href='board_list.php'"/>
+            <img src="./image/logo3.png" class="logo" onclick="location.href='board_list.php'" />
         </div>
         <br />
-        <span class="page" >
+        <span class="page">
             <b><?php
                 echo "총 게시물 : {$nav->total_row} / 전체 페이지 : {$nav->total_page}";
                 ?></b>
@@ -406,7 +496,7 @@ $db->commit();
         <div class="write">
             <input type="button" value="글쓰기" onclick="goWrite()" />
         </div>
-      
+
         <div style="text-align:center;">
             <?php echo $str_page_bar ?>
         </div>
@@ -415,17 +505,17 @@ $db->commit();
             <form id="frmSearch" name="frmSearch" method="get" aciton="<?php echo $_SERVER["SCRIPT_NAME"] ?>" onsubmit="goSearch(this); return false;">
                 <input type="hidden" id="mode" name="mode" value="search" />
                 <div class="row">
-                <div class="col-25">
-                <select id="s_type" name="s_type" aria-label=".form-select-sm example"  style="width:175px; height:30px; margin-left:30%">
-                    <option value="all" <?php echo @$sel_opt["all"]; ?>>전체</option>
-                    <?php echo $search_options_html; ?>
-                </select>
-                </div>
-                <div class="col-75">
-                <input type="text" id="s_word" name="s_word" value="<?php echo @trim($post["s_word"]); ?>" />
-                <input type="button" id="btnSearch" name="btnSearch" value=" 검색 " onclick="goSearch(this.form);" />
-                <input type="button" id="btnSearch" name="btnSearch" value=" 검색 취소 " onclick="location.href='<?php echo $_SERVER["SCRIPT_NAME"] ?>'" />
-                </div>
+                    <div class="col-25">
+                        <select id="s_type" name="s_type" aria-label=".form-select-sm example" style="width:175px; height:30px; margin-left:30%">
+                            <option value="all" <?php echo @$sel_opt["all"]; ?>>전체</option>
+                            <?php echo $search_options_html; ?>
+                        </select>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" id="s_word" name="s_word" value="<?php echo @trim($post["s_word"]); ?>" />
+                        <input type="button" id="btnSearch" name="btnSearch" value=" 검색 " onclick="goSearch(this.form);" />
+                        <input type="button" id="btnSearch" name="btnSearch" value=" 검색 취소 " onclick="location.href='<?php echo $_SERVER["SCRIPT_NAME"] ?>'" />
+                    </div>
                 </div>
             </form>
         </div>
