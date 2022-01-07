@@ -63,7 +63,7 @@ WHERE u.user_id = '{$_SESSION["user_id"]}' and u.dept_id = de.dept_no and u.duty
         $uno = $row[3]["uno"];
     }
 
-    $file = "<div class=\"row\" style=\"margin-left:88px\">
+    $file = "<div class=\"row\" style=\"margin-left:70px\">
             <input type=\"file\" name=\"userfile\" onchange=\"previewFile()\"><br>
             <img src=\"\" id=\"image\" width=\"300px\" class=\"img-thumbnail\" onError=\"this.style.visibility='hidden'\">
             </div>";
@@ -212,8 +212,11 @@ WHERE u.user_id = '{$_SESSION["user_id"]}' and u.dept_id = de.dept_no and u.duty
         }
 
         input[type=button] {
-            background-color: #6495ED;
-            color: white;
+            /* background-color: #6495ED;
+            color: white; */
+            background-color: white;
+            box-shadow: rgba(30, 22, 54, 0.4) 0 0px 0px 2px inset;
+            color: rgba(30, 22, 54, 0.6);
             padding: 8px 12px;
             border: none;
             border-radius: 4px;
@@ -222,14 +225,16 @@ WHERE u.user_id = '{$_SESSION["user_id"]}' and u.dept_id = de.dept_no and u.duty
         }
 
         input[type=button]:hover {
-            background-color: #4682B4;
+            color: rgba(255, 255, 255, 0.85);
+            background-color:rgba(255, 255, 255, 0.85);
+            box-shadow: rgba(30, 22, 54, 0.7) 0 80px 0px 2px inset;
 
         }
 
         .container {
             border-radius: 15px;
             background-color: ghostwhite;
-            padding: 20px;
+            padding: 50px;
             max-width: 900px;
             margin-left: 27%;
             margin-top: 3%;
