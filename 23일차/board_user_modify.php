@@ -93,6 +93,7 @@ else if($post["mode"] == "delete"){
         exit;
     }
     $db->EndTransaction();
+    unset($_SESSION["user_id"]);
     Fun::alert("탈퇴가 완료되었습니다.", "board_login.php");
 }
 ?>
