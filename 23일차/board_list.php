@@ -170,9 +170,9 @@ if ($file_name) {
 <html>
 
 <head>
-<link href="css/bootstrap.min.css" rel="stylesheet">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome">
@@ -211,69 +211,10 @@ if ($file_name) {
 
         }
 
-        /* table.type07 {
-            border-collapse: collapse;
-            text-align: left;
-            line-height: 1.5;
-            border: 1px solid #ccc;
-            margin: 0px 220px;
-        }
-
-        @media(min-width:1900px) {
-            table.type07 {
-                border-collapse: collapse;
-                text-align: left;
-                line-height: 1.5;
-                border: 2px solid #ccc;
-                margin: 0px 390px;
-            }
-        }
-
-        @media(max-width:500px) {
-            table.type07 {
-                border-collapse: collapse;
-                text-align: center;
-                line-height: 1.5;
-                border: 1px solid #ccc;
-                margin: 0px 15px;
-            }
-        }
-
-        table.type07 thead {
-            border-right: 1px solid #ccc;
-            border-left: 1px solid #ccc;
-            background-image: url('./image/thead.jpg');
-            
-        }
-
-        table.type07 thead th {
-            padding: 10px;
-            font-weight: bold;
-            vertical-align: top;
-            color: black;
-        }
-
-        table.type07 tbody th {
-            width: 150px;
-            padding: 5px;
-            font-weight: bold;
-            vertical-align: top;
-            border-bottom: 1px solid #ccc;
-            background: #fcf1f4;
- 
-        } */
-
-        table.type07 td {
-            /* width: 350px; */
-            padding: 5px;
-            vertical-align: top;
-            border-bottom: 1px solid #ccc;
-            background-color:white;
-        }
-
         input[type=button] {
-            background-color: #6495ED;
-            color: white;
+            background-color: white;
+            box-shadow: rgba(30, 22, 54, 0.4) 0 0px 0px 2px inset;
+            color: rgba(30, 22, 54, 0.6);
             padding: 5px 10px;
             border: none;
             border-radius: 4px;
@@ -282,17 +223,20 @@ if ($file_name) {
 
         @media(max-width:500px) {
             input[type=button] {
-                background-color: #6495ED;
-                color: white;
-                padding: 4px;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-            }
+            background-color: white;
+            box-shadow: rgba(30, 22, 54, 0.4) 0 0px 0px 2px inset;
+            color: rgba(30, 22, 54, 0.6);
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
         }
 
         input[type=button]:hover {
-            background-color: #4682B4;
+            color: rgba(255, 255, 255, 0.85);
+            background-color:rgba(255, 255, 255, 0.85);
+            box-shadow: rgba(30, 22, 54, 0.7) 0 80px 0px 2px inset;
 
         }
 
@@ -361,12 +305,13 @@ if ($file_name) {
                 margin-left: 32%;
             }
         }
+
         @media(max-width:500px) {
             .col-25 {
                 float: left;
                 width: 10%;
                 margin-top: 7px;
-                margin-left: 65px;
+                margin-left: 53px;
             }
         }
 
@@ -390,9 +335,10 @@ if ($file_name) {
                 float: left;
                 width: 89%;
                 margin-top: 6px;
-                margin-left:auto;
+                margin-left: auto;
             }
         }
+
         .col-50 {
             float: left;
             width: 1%;
@@ -407,7 +353,7 @@ if ($file_name) {
 
         .page {
             margin-left: 16.5%;
-            background-image: url('./image/hello.jpg');
+            background-image: url('./image/cute.gif');
             padding: 8px;
             border-radius: 4px;
         }
@@ -415,7 +361,7 @@ if ($file_name) {
         @media(min-width:1900px) {
             .page {
                 margin-left: 23.5%;
-                background-image: url('./image/hello.jpg');
+                background-image: url('./image/cute.gif');
                 padding: 8px;
                 border-radius: 4px;
             }
@@ -424,7 +370,7 @@ if ($file_name) {
         @media(max-width:500px) {
             .page {
                 margin-left: 15px;
-                background-image: url('./image/hello.jpg');
+                background-image: url('./image/cute.gif');
                 padding: 4px;
                 border-radius: 4px;
             }
@@ -491,72 +437,75 @@ if ($file_name) {
 
         @media(max-width:500px) {
             .s_type {
-            width: 115px;
-            height: 20px;
-            margin-left: 0px;
+                width: 115px;
+                height: 20px;
+                margin-left: 0px;
+            }
         }
-        }
-        .table_position{
+
+        .table_position {
             margin-left: 15%;
             margin-right: 15%;
         }
+
         @media(min-width:1900px) {
-            .table_position{
-            margin-left: 22%;
-            margin-right: 22%;
+            .table_position {
+                margin-left: 22%;
+                margin-right: 22%;
+            }
         }
-        }
+
         @media(max-width:500px) {
-            .table_position{
-            margin-left: 5%;
-            margin-right: 0%;
+            .table_position {
+                margin-left: 5%;
+                margin-right: 0%;
+            }
+        }
+
+        a.button,
+        a.button2 {
+            -webkit-transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
+            -moz-transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
+            -ms-transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
+            -o-transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
+            transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
+            display: block;
+            /* margin: 20px auto; */
+            width: 80px;
+            text-decoration: none;
+            border-radius: 4px;
+            padding: 5px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        @media(max-width:500px) {
+        a.button2 {
+            -webkit-transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
+            -moz-transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
+            -ms-transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
+            -o-transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
+            transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
+            display: block;
+            /* margin: 20px auto; */
+            width: 45px;
+            text-decoration: none;
+            border-radius: 4px;
+            padding: 5px;
+            text-align: center;
+            cursor: pointer;
         }
         }
-        /* .wrap {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin-top: -86px;
-	margin-left: -89px;
-	text-align: center;
-} */
 
-a.button, a.button2 {
-	-webkit-transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
-	-moz-transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
-	-ms-transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
-	-o-transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
-	transition: all 200ms cubic-bezier(0.390, 0.500, 0.150, 1.360);
-	display: block;
-	/* margin: 20px auto; */
-	width: 80px;
-	text-decoration: none;
-	border-radius: 4px;
-	padding: 5px;
-    text-align: center;
-    cursor:pointer;
-}
+        a.button2 {
+            color: rgba(30, 22, 54, 0.6);
+            box-shadow: rgba(30, 22, 54, 0.4) 0 0px 0px 2px inset;
+        }
 
-a.button {
-	color: rgba(30, 22, 54, 0.6);
-	box-shadow: rgba(30, 22, 54, 0.4) 0 0px 0px 2px inset;
-}
-
-a.button:hover {
-	color: rgba(255, 255, 255, 0.85);
-	box-shadow: rgba(30, 22, 54, 0.7) 0 0px 0px 40px inset;
-}
-
-a.button2 {
-	color: rgba(30, 22, 54, 0.6);
-	box-shadow: rgba(30, 22, 54, 0.4) 0 0px 0px 2px inset;
-}
-
-a.button2:hover {
-	color: rgba(255, 255, 255, 0.85);
-	box-shadow: rgba(30, 22, 54, 0.7) 0 80px 0px 2px inset;
-}
-
+        a.button2:hover {
+            color: rgba(255, 255, 255, 0.85);
+            box-shadow: rgba(30, 22, 54, 0.7) 0 80px 0px 2px inset;
+        }
     </style>
 </head>
 
@@ -574,7 +523,7 @@ a.button2:hover {
         <br />
         <div class="bar">
             <!-- <div style="float:right">&nbsp;<input type="button" onclick="logout()" value="로그아웃" /></div> -->
-  		<div style="float:right"><a class="button2" onclick="logout()">로그아웃</a></div>
+            <div style="float:right"><a class="button2" onclick="logout()">로그아웃</a></div>
 
             <span style=" padding:8px;border-radius: 4px; float:right;"><b><?php echo $hello ?></b></span>
             <?php echo $user_img ?>
@@ -592,23 +541,22 @@ a.button2:hover {
         </span>
         <br /><br />
         <div class="table_position">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th scope="cols" style="width: 20px; text-align :center;">NO.</th>
-                    <th scope="cols" style="width: 250px; text-align :center;">작성일</th>
-                    <th scope="cols" style="width: 525px;">TITLE</th>
-                    <th scope="cols" style="width: 400px;">작성자</th>
-                    <th scope="cols" style="width: 80px; text-align:center;">조회수</th>
-                    <th scope="cols" style="width: 80px; text-align:center;">좋아요</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php echo $str_data_row; ?>
-            </tbody>
-        </table>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="cols" style="width: 20px; text-align :center;">NO.</th>
+                        <th scope="cols" style="width: 250px; text-align :center;">작성일</th>
+                        <th scope="cols" style="width: 525px;">TITLE</th>
+                        <th scope="cols" style="width: 400px;">작성자</th>
+                        <th scope="cols" style="width: 80px; text-align:center;">조회수</th>
+                        <th scope="cols" style="width: 80px; text-align:center;">좋아요</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php echo $str_data_row; ?>
+                </tbody>
+            </table>
         </div>
-        <br />
         <div class="write">
             <!-- <input type="button" value="글쓰기" onclick="goWrite()" /> -->
             <a class="button2" onclick="goWrite()" style="margin-left:95%">글쓰기</a>
