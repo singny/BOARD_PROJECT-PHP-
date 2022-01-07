@@ -353,18 +353,23 @@ WHERE b.re_user = u.uno and u.dept_id = de.dept_no and u.duty_id = du.duty_no an
     }
 
     input[type=button] {
-      background-color: #6495ED;
-      color: white;
+      /* background-color: #6495ED;
+      color: white; */
+      background-color: white;
+            box-shadow: rgba(30, 22, 54, 0.4) 0 0px 0px 2px inset;
+            color: rgba(30, 22, 54, 0.6);
       padding: 10px 15px;
       border: none;
       border-radius: 4px;
       cursor: pointer;
+      font-family: 'Gowun Dodum', sans-serif;
 
     }
 
     input[type=button]:hover {
-      background-color: #4682B4;
-
+      color: rgba(255, 255, 255, 0.85);
+            background-color:rgba(255, 255, 255, 0.85);
+            box-shadow: rgba(30, 22, 54, 0.7) 0 80px 0px 2px inset;
     }
 
     .container {
