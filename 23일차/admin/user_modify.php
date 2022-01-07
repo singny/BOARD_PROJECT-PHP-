@@ -48,6 +48,7 @@ else if($post["mode"] == "delete"){
         exit;
     }
     $db->EndTransaction();
-    Fun::alert("탈퇴가 완료되었습니다.", "../board_login.php");
+    unset($_SESSION["user_id"]);
+    Fun::alert("탈퇴가 완료되었습니다.", "user_list.php");
 }
 ?>
