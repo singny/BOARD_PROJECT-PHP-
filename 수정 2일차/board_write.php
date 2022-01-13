@@ -116,7 +116,8 @@ WHERE u.user_id = '{$_SESSION["user_id"]}' and u.dept_id = de.dept_no and u.duty
         <label for=\"re_user\">첨부파일</label>
         </div>
         <div class=\"col-75\">
-        <h4>&nbsp;$file_name</h4>
+        <div style=\"float:left; width:12%\"><h4>&nbsp;$file_name</h4></div>
+        <div style=\"float:left; width:5%; padding-top:1.5%\"><img src=\"image/remove.png\" width=\"20px\" height=\"20px\" onclick=\"deleteImg()\" style=\"cursor:pointer\" /></div>
         </div>
         </div>
         <div class=\"row\">
@@ -129,9 +130,14 @@ WHERE u.user_id = '{$_SESSION["user_id"]}' and u.dept_id = de.dept_no and u.duty
         </div>
         </div>";
     } else {
-        $file = "<div class=\"row\" style=\"margin-left:88px\">
+        $file = "<div class=\"row\">
+        <div class=\"col-25\">
+        <label for=\"re_user\">파일 선택</label>
+        </div>
+        <div class=\"col-75\" style=\"margin-top:15px\">
         <input type=\"file\" name=\"userfile\" onchange=\"previewFile()\"><br>
         <img src=\"\" id=\"image\" class=\"img-thumbnail\" height=\"300\" onError=\"this.style.visibility='hidden'\">
+        </div>
         </div>";
     }
 
