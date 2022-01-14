@@ -79,14 +79,14 @@ if ($query_row_count > 0) {
         if ($diff->days >= 1) {
             $no = $count - $nav->start_row - $i;
             $date = substr($row["con_datetime"], 0, 10);
-            if($row["is_use"] == 'N' || $row["is_active"] == 'N'){
-                $dept_user = "[" . $row["dept_name"] . "] " . $row["user_name"] . " " . $row["duty_name"]. "&nbsp;<img src=\"image/delete-user.png\" title=\"탈퇴한 계정\" width=\"25px\" height=\"25px\">";
-            }else{
+            if ($row["is_use"] == 'N' || $row["is_active"] == 'N') {
+                $dept_user = "[" . $row["dept_name"] . "] " . $row["user_name"] . " " . $row["duty_name"] . "&nbsp;<img src=\"image/delete-user.png\" title=\"탈퇴한 계정\" width=\"25px\" height=\"25px\">";
+            } else {
                 $dept_user = "[" . $row["dept_name"] . "] " . $row["user_name"] . " " . $row["duty_name"];
             }
-            if($row["file_path"]){
+            if ($row["file_path"]) {
                 $con_title = Fun::convDB2Val($row["con_title"]) . " [" . $row["con_comment"] . "]&nbsp;<img src=\"./image/folder.png\" style=\"width:17.5px;height:17.5px;\">";
-            }else{
+            } else {
                 $con_title = Fun::convDB2Val($row["con_title"]) . " [" . $row["con_comment"] . "]";
             }
             $list_query = Fun::getParamUrl();
@@ -104,14 +104,14 @@ if ($query_row_count > 0) {
         } else {
             $no = $count - $nav->start_row - $i;
             $date = substr($row["con_datetime"], 0, 10);
-            if($row["is_use"] == 'N' || $row["is_active"] == 'N'){
-                $dept_user = "[" . $row["dept_name"] . "] " . $row["user_name"] . " " . $row["duty_name"]. "&nbsp;<img src=\"image/delete-user.png\" title=\"탈퇴한 계정\" width=\"25px\" height=\"25px\">";
-            }else{
+            if ($row["is_use"] == 'N' || $row["is_active"] == 'N') {
+                $dept_user = "[" . $row["dept_name"] . "] " . $row["user_name"] . " " . $row["duty_name"] . "&nbsp;<img src=\"image/delete-user.png\" title=\"탈퇴한 계정\" width=\"25px\" height=\"25px\">";
+            } else {
                 $dept_user = "[" . $row["dept_name"] . "] " . $row["user_name"] . " " . $row["duty_name"];
             }
-            if($row["file_path"]){
+            if ($row["file_path"]) {
                 $con_title = Fun::convDB2Val($row["con_title"]) . " <img src=\"./image/new.png\" width=\"25px\" height=\"25px\" /> [" . $row["con_comment"] . "]&nbsp;<img src=\"./image/folder.png\" style=\"width:17.5px;height:17.5px;\">";
-            }else{
+            } else {
                 $con_title = Fun::convDB2Val($row["con_title"]) . " <img src=\"./image/new.png\" width=\"25px\" height=\"25px\" /> [" . $row["con_comment"] . "] ";
             }
             $list_query = Fun::getParamUrl();
@@ -153,7 +153,7 @@ if (@$_SESSION["user_id"]) {
 
 $user_mng = null;
 if (@$_SESSION["user_id"] == "admin") {
-    $user_mng = "<li><a href=\"./admin/user_list.php\">회원관리</a></li>";
+    $user_mng = "<li style=\"padding-top:15px\"><a href=\"./admin/user_list.php\" >회원관리</a></li>";
 };
 
 //view scroll 초기화
@@ -229,15 +229,15 @@ SELECT COUNT(*) AS CNT FROM A";
             if ($diff->days >= 1) {
                 $no = $count - $nav->start_row - $i;
                 $date = substr($row["con_datetime"], 0, 10);
-                if($row["is_use"] == 'N' || $row["is_active"] == 'N'){
-                    $dept_user = "[" . $row["dept_name"] . "] " . $row["user_name"] . " " . $row["duty_name"]. "&nbsp;<img src=\"image/delete-user.png\" title=\"탈퇴한 계정\" width=\"25px\" height=\"25px\">";
-                }else{
+                if ($row["is_use"] == 'N' || $row["is_active"] == 'N') {
+                    $dept_user = "[" . $row["dept_name"] . "] " . $row["user_name"] . " " . $row["duty_name"] . "&nbsp;<img src=\"image/delete-user.png\" title=\"탈퇴한 계정\" width=\"25px\" height=\"25px\">";
+                } else {
                     $dept_user = "[" . $row["dept_name"] . "] " . $row["user_name"] . " " . $row["duty_name"];
                 }
 
-                if($row["file_path"]){
+                if ($row["file_path"]) {
                     $con_title = Fun::convDB2Val($row["con_title"]) . " [" . $row["con_comment"] . "]&nbsp;<img src=\"./image/folder.png\" style=\"width:17.5px;height:17.5px;\">";
-                }else{
+                } else {
                     $con_title = Fun::convDB2Val($row["con_title"]) . " [" . $row["con_comment"] . "]";
                 }
 
@@ -256,15 +256,15 @@ SELECT COUNT(*) AS CNT FROM A";
             } else {
                 $no = $count - $nav->start_row - $i;
                 $date = substr($row["con_datetime"], 0, 10);
-                if($row["is_use"] == 'N' || $row["is_active"] == 'N'){
-                    $dept_user = "[" . $row["dept_name"] . "] " . $row["user_name"] . " " . $row["duty_name"]. "&nbsp;<img src=\"image/delete-user.png\" title=\"탈퇴한 계정\" width=\"25px\" height=\"25px\">";
-                }else{
+                if ($row["is_use"] == 'N' || $row["is_active"] == 'N') {
+                    $dept_user = "[" . $row["dept_name"] . "] " . $row["user_name"] . " " . $row["duty_name"] . "&nbsp;<img src=\"image/delete-user.png\" title=\"탈퇴한 계정\" width=\"25px\" height=\"25px\">";
+                } else {
                     $dept_user = "[" . $row["dept_name"] . "] " . $row["user_name"] . " " . $row["duty_name"];
                 }
 
-                if($row["file_path"]){
+                if ($row["file_path"]) {
                     $con_title = Fun::convDB2Val($row["con_title"]) . " <img src=\"./image/new.png\" width=\"25px\" height=\"25px\" /> [" . $row["con_comment"] . "]&nbsp;<img src=\"./image/folder.png\" style=\"width:17.5px;height:17.5px;\">";
-                }else{
+                } else {
                     $con_title = Fun::convDB2Val($row["con_title"]) . " <img src=\"./image/new.png\" width=\"25px\" height=\"25px\" /> [" . $row["con_comment"] . "] ";
                 }
                 $list_query = Fun::getParamUrl();
@@ -300,8 +300,8 @@ if (@$post["order"] == 'con_good') {
                 ORDER BY con_good desc";
     $sql = "WITH A as (
     {$main_sql}
-)
-SELECT COUNT(*) AS CNT FROM A";
+    )
+    SELECT COUNT(*) AS CNT FROM A";
 
     $count = $db->query_one($sql);
     $str_page_bar = $nav->navpage($count);
@@ -329,14 +329,14 @@ SELECT COUNT(*) AS CNT FROM A";
             if ($diff->days >= 1) {
                 $no = $count - $nav->start_row - $i;
                 $date = substr($row["con_datetime"], 0, 10);
-                if($row["is_use"] == 'N' || $row["is_active"] == 'N'){
-                    $dept_user = "[" . $row["dept_name"] . "] " . $row["user_name"] . " " . $row["duty_name"]. "&nbsp;<img src=\"image/delete-user.png\" title=\"탈퇴한 계정\" width=\"25px\" height=\"25px\">";
-                }else{
+                if ($row["is_use"] == 'N' || $row["is_active"] == 'N') {
+                    $dept_user = "[" . $row["dept_name"] . "] " . $row["user_name"] . " " . $row["duty_name"] . "&nbsp;<img src=\"image/delete-user.png\" title=\"탈퇴한 계정\" width=\"25px\" height=\"25px\">";
+                } else {
                     $dept_user = "[" . $row["dept_name"] . "] " . $row["user_name"] . " " . $row["duty_name"];
                 }
-                if($row["file_path"]){
+                if ($row["file_path"]) {
                     $con_title = Fun::convDB2Val($row["con_title"]) . " [" . $row["con_comment"] . "]&nbsp;<img src=\"./image/folder.png\" style=\"width:17.5px;height:17.5px;\">";
-                }else{
+                } else {
                     $con_title = Fun::convDB2Val($row["con_title"]) . " [" . $row["con_comment"] . "]";
                 }
                 $list_query = Fun::getParamUrl();
@@ -354,14 +354,14 @@ SELECT COUNT(*) AS CNT FROM A";
             } else {
                 $no = $count - $nav->start_row - $i;
                 $date = substr($row["con_datetime"], 0, 10);
-                if($row["is_use"] == 'N' || $row["is_active"] == 'N'){
-                    $dept_user = "[" . $row["dept_name"] . "] " . $row["user_name"] . " " . $row["duty_name"]. "&nbsp;<img src=\"image/delete-user.png\" title=\"탈퇴한 계정\" width=\"25px\" height=\"25px\">";
-                }else{
+                if ($row["is_use"] == 'N' || $row["is_active"] == 'N') {
+                    $dept_user = "[" . $row["dept_name"] . "] " . $row["user_name"] . " " . $row["duty_name"] . "&nbsp;<img src=\"image/delete-user.png\" title=\"탈퇴한 계정\" width=\"25px\" height=\"25px\">";
+                } else {
                     $dept_user = "[" . $row["dept_name"] . "] " . $row["user_name"] . " " . $row["duty_name"];
                 }
-                if($row["file_path"]){
+                if ($row["file_path"]) {
                     $con_title = Fun::convDB2Val($row["con_title"]) . " <img src=\"./image/new.png\" width=\"25px\" height=\"25px\" /> [" . $row["con_comment"] . "]&nbsp;<img src=\"./image/folder.png\" style=\"width:17.5px;height:17.5px;\">";
-                }else{
+                } else {
                     $con_title = Fun::convDB2Val($row["con_title"]) . " <img src=\"./image/new.png\" width=\"25px\" height=\"25px\" /> [" . $row["con_comment"] . "] ";
                 }
                 $list_query = Fun::getParamUrl();
@@ -386,6 +386,40 @@ SELECT COUNT(*) AS CNT FROM A";
           ';
     }
 }
+
+// 알림 기능
+$alert_sql = "SELECT b.con_no, b.con_title, de.dept_name, du.duty_name, u.user_name, a.is_read
+                FROM board_contents b, board_alert a, ex_user_set u , ex_dept_set de, ex_duty_set du
+                WHERE b.re_user = {$_SESSION["uno"]} and b.wr_user = a.wr_user and b.con_no = a.con_no and b.wr_user = u.uno and u.dept_id = de.dept_no and u.duty_id = du.duty_no
+                ORDER BY con_datetime DESC";
+$db->query($alert_sql);
+$alert_data_row = null;
+while ($db->next_record()) {
+    $row[3] = $db->Record;
+    $wr_user = "[". $row[3]["dept_name"] ."] ".$row[3]["user_name"]." ".$row[3]["duty_name"];
+
+    if($row[3]["is_read"] == 'N'){
+        $alert_data_row .= "<tr onclick=\"location.href='board_view.php?{$list_query}&con_no={$row[3]["con_no"]}'\" style=\"cursor:pointer\">
+                                <td>{$wr_user}께서 회원님을 추천하는 글을 작성하였습니다.<br /><br />글 제목 : {$row[3]["con_title"]}</td>
+                                <td><img src=\"image/read.png\" width=\"30px\" height=\"30px\"></td>
+                            </tr>";
+    }else{
+        $alert_data_row .= "<tr onclick=\"location.href='board_view.php?{$list_query}&con_no={$row[3]["con_no"]}'\" style=\"cursor:pointer\">
+                                <td>{$wr_user}께서 회원님을 추천하는 글을 작성하였습니다.<br /><br />글 제목 : {$row[3]["con_title"]}</td>
+                                <td>&nbsp;</td>
+                            </tr>";
+    }
+}
+
+$art_sql = "SELECT COUNT(*) FROM {$_table_alert} WHERE uno = {$_SESSION["uno"]} and is_read='N'";
+$an = $db->query_one($art_sql);
+
+if ($an == 0) {
+    $alert = "<img src=\"./image/nobell.png\" width=\"20px\" height=\"20px\" /> 알림창[" . $an . "]";;
+} else {
+    $alert = "<img src=\"./image/bell.png\" width=\"20px\" height=\"20px\" /> 알림창[" . $an . "]";
+}
+
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7" lang="ko"> <![endif]-->
@@ -397,12 +431,14 @@ SELECT COUNT(*) AS CNT FROM A";
 <html>
 
 <head>
-<meta property="og:url" content="http://separk2111.htenc.com">
-  <meta property="og:title" content="(주) 하이테크엔지니어링">
-  <meta property="og:type" content="website">
-  <meta property="og:image" content="http://separk2111.htenc.com/image/thumbnail.png">
-  <meta property="og:description" content="로그인하세요">
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <meta property="og:url" content="http://separk2111.htenc.com">
+    <meta property="og:title" content="(주) 하이테크엔지니어링">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="http://separk2111.htenc.com/image/thumbnail.png">
+    <meta property="og:description" content="로그인하세요">
+    <!-- <link href="css/bootstrap.min.css" rel="stylesheet"> -->
+    <!-- <script src="jquery/jquery.js"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <!-- 합쳐지고 최소화된 최신 CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 
@@ -411,9 +447,8 @@ SELECT COUNT(*) AS CNT FROM A";
 
     <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!-- <script src="js/bootstrap.min.js"></script> -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"> -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -481,69 +516,19 @@ SELECT COUNT(*) AS CNT FROM A";
 
         }
 
-        ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            width: 12.5%;
-            background-color: #F0F8FF;
-            position: fixed;
-            height: 100%;
-            overflow: auto;
-        }
-
-        li a {
-            display: block;
-            color: #000;
-            padding: 8px 16px;
-            text-decoration: none;
-        }
-
-        li a.active {
-            background-color: #000080;
-            color: white;
-        }
-
-        li a:hover:not(.active) {
-            background-color: #000080;
-            color: white;
-        }
-
-        li img {
-            padding-top: 20px;
-            padding-left: 40px;
-            width: 150px
-        }
-
-        @media(min-width:1900px) {
-            li img {
-                padding-top: 20px;
-                padding-left: 40px;
-                width: 200px
-            }
-        }
-
-        @media(max-width:500px) {
-            li img {
-                padding: 3px;
-                width: 45px
-            }
-
-        }
-
         .col-25 {
             float: left;
-            width: 7.5%;
+            width: 4.5%;
             margin-top: 7px;
-            margin-left: 32%;
+            margin-left: 35%;
         }
 
         @media(min-width:1900px) {
             .col-25 {
                 float: left;
-                width: 7.25%;
+                width: 5%;
                 margin-top: 7px;
-                margin-left: 32%;
+                margin-left: 37%;
             }
         }
 
@@ -552,7 +537,7 @@ SELECT COUNT(*) AS CNT FROM A";
                 float: left;
                 width: 10%;
                 margin-top: 7px;
-                margin-left: 53px;
+                margin-left: 55px;
             }
         }
 
@@ -632,7 +617,7 @@ SELECT COUNT(*) AS CNT FROM A";
         @media(max-width:500px) {
             .write {
                 text-align: right;
-                margin-right: 5%
+                margin-right: 10%
             }
         }
 
@@ -641,11 +626,12 @@ SELECT COUNT(*) AS CNT FROM A";
             height: 50px;
             border-radius: 50%;
             float: right;
-            margin-right: 5px;
+            margin-right: 0px;
             border: 3px solid #fff;
             box-shadow: 0 0 16px rgb(221, 221, 221);
             cursor: pointer;
             background-size: 47.5px 50px;
+            margin-bottom: 15px;
 
         }
 
@@ -661,11 +647,12 @@ SELECT COUNT(*) AS CNT FROM A";
 
         .logo {
             max-width: 900px;
+            padding-top: 1%;
         }
 
         @media(max-width:500px) {
             .logo {
-                max-width: 300px;
+                max-width: 360px;
                 padding: 15px;
             }
         }
@@ -698,7 +685,7 @@ SELECT COUNT(*) AS CNT FROM A";
 
         @media(max-width:500px) {
             .table_position {
-                margin-left: 5%;
+                margin-left: 3.5%;
                 margin-right: 0%;
             }
         }
@@ -749,38 +736,141 @@ SELECT COUNT(*) AS CNT FROM A";
         }
 
         .order {
-            margin-left: 565px;
+            margin-left: 600px;
         }
 
         @media(max-width:500px) {
             .order {
-                margin-left: 160px;
+                margin-left: 185px;
+            }
+        }
+
+        .H {
+            width: 50px;
+            height: 50px;
+        }
+
+        @media(max-width:500px) {
+            .H {
+                width: 20px;
+                height: 20px;
             }
         }
     </style>
 </head>
 
 <body>
-    <ul>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <div><a class="navbar-brand" href="board_list.php">
+                        <img class="H" alt="Brand" src="image/letter-h.png">
+                    </a></div>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active" style="padding-top:15px"><a href="board_list.php">우수직원 추천 게시판 <span class="sr-only">(current)</span></a></li>
+                    <li style="padding-top:15px"><a href="board_chart.php">우수직원 순위현황</a></li>
+                    <?php echo $user_mng ?>
+                    <!-- <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+            <li class="divider"></li>
+            <li><a href="#">One more separated link</a></li>
+          </ul>
+        </li> -->
+                </ul>
+                <!-- <form class="navbar-form navbar-left" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form> -->
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#"><?php echo $user_img ?></a></li>
+                    <li><span style=" padding-top:30px;padding-right:15px;border-radius: 4px; float:right; background-image:url(image/love.gif)"><b><?php echo $hello ?></b></li>
+                    <li>
+                        <div style="float:right; padding-top:22px;padding-right:10px"><a class="button2" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal"><?php echo $alert?></a></div>
+                    </li>
+                    <li>
+                        <div style="float:right; padding-top:22px"><a class="button2" onclick="goMessage()"><?php echo $message ?></a></div>
+                    </li>
+                    <li>
+                        <div style="float:right;padding-top:22px;padding-left:10px;padding-right:20px;"><a class="button2" onclick="logout()">로그아웃</a></div>
+                    </li>
+
+                    <!-- Button trigger modal -->
+
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">알림창</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <table class="table table-hover">
+                                        <tbody>
+                                            <?php echo $alert_data_row; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+          </ul>
+        </li> -->
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+    <!-- <ul>
         <li><img src="./image/welcome2.png"></li>
         <li>&nbsp;</li>
         <li><a class="active" href="board_list.php">우수직원 게시판</a></li>
         <li><a href="board_chart.php">우수직원 순위현황</a></li>
-        <li><a href="#" onclick="goMessage()"><?php echo $li_message ?></a></li>
-        <!-- <li><a href="#" onclick="goMessage()">쪽지함</a></li> -->
-        <?php echo $user_mng ?>
-        <!-- <li><a href="#">소개</a></li>
-  <li><a href="#">자유게시판</a></li> -->
-    </ul>
-    <div style="margin-left:8%;padding:1px 16px;height:900px;">
+        <?php //echo $user_mng 
+        ?>
+    </ul> -->
+    <div style="height:900px;width:98%">
         <br />
         <div class="bar">
             <!-- <div style="float:right">&nbsp;<input type="button" onclick="logout()" value="로그아웃" /></div> -->
-            <div style="float:right"><a class="button2" onclick="logout()">로그아웃</a></div>
+            <!-- <div style="float:right"><a class="button2" onclick="logout()">로그아웃</a></div>
             <div style="float:right; padding-right:8px"><a class="button2" onclick="goMessage()"><?php echo $message ?></a></div>
 
             <span style=" padding:8px;border-radius: 4px; float:right; background-image:url(image/love.gif)"><b><?php echo $hello ?></b></span>
-            <?php echo $user_img ?>
+            <?php //echo $user_img 
+            ?> -->
             <!-- <div class="circle " onclick="location.href='my_page.php';" title="마이페이지"></div> -->
         </div>
         <br /><br /><br />
@@ -794,7 +884,7 @@ SELECT COUNT(*) AS CNT FROM A";
                 ?></b>
         </span>
         <span class="order">
-            <div class="btn-group" role="group" >
+            <div class="btn-group" role="group">
                 <button type="button" class="btn btn-default" onclick="orderConvc()" style="font-size:small;">조회수</button>
                 <button type="button" class="btn btn-default" onclick="goList()" style="font-size:small;">최신순</button>
                 <button type="button" class="btn btn-default" onclick="orderGood()" style="font-size:small;">좋아요</button>
