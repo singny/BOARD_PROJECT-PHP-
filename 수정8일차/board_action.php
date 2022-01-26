@@ -26,9 +26,8 @@ if ($post["mode"] == "modify" && $post["con_no"] != "") {
         try {
             $sql = "UPDATE {$_table_board} SET"
                 . "   CON_TITLE = '{$con_title}'"
-                . " , CON_BODY = '{$con_body}'"
                 . " , RE_USER = '{$post["re_user"]}'"
-                . " WHERE CON_NO = '{$post["con_no"]}'";
+                . " WHERE CON_NO = {$post["con_no"]}";
             $db->query($sql);
             $db->commit();
         } catch (Exception $ex) {
@@ -37,6 +36,18 @@ if ($post["mode"] == "modify" && $post["con_no"] != "") {
             exit;
         }
         $db->EndTransaction();
+
+            // summernote
+            $db->BeginTransaction();
+            try {
+                $LinkID = $db->update_clob($_table_board, "con_body", "con_no = {$post["con_no"]}", $con_body, $ALinkID = null);
+                oci_commit($LinkID);
+            } catch (Exception $ex) {
+                $db->rollback();
+                echo $ex;
+                exit;
+            }
+            $db->EndTransaction();
 
         if ($post["yn_img"] == "no") {
             $file_sql = "UPDATE {$_table_board} SET FILE_PATH = null WHERE CON_NO={$post["con_no"]}";
@@ -55,6 +66,8 @@ if ($post["mode"] == "modify" && $post["con_no"] != "") {
                 //print "파일 업로드 공격의 가능성이 있습니다!\n";
             }
         }
+
+
         Fun::alert("정상적으로 글를 수정하였습니다.", "board_view.php?con_no={$post["con_no"]}");
     }
 } else if ($post["mode"] == "write") {
@@ -66,9 +79,9 @@ if ($post["mode"] == "modify" && $post["con_no"] != "") {
     try {
         $con_no = $db->nextid("SEQ_" . $_table_board);
         $sql = "INSERT INTO {$_table_board} ("
-            . " CON_NO, CON_DATETIME, WR_USER, CON_TITLE, CON_BODY, RE_USER"
+            . " CON_NO, CON_DATETIME, WR_USER, CON_TITLE, RE_USER"
             . ") VALUES ("
-            . " {$con_no}, sysdate ,{$post["uno"]}, '{$con_title}','{$con_body}', {$post["re_user"]}"
+            . " {$con_no}, sysdate ,{$post["uno"]}, '{$con_title}', {$post["re_user"]}"
             . ")";
         $db->query($sql);
         $db->commit();
@@ -79,7 +92,17 @@ if ($post["mode"] == "modify" && $post["con_no"] != "") {
     }
     $db->EndTransaction();
 
-
+    // summernote
+    $db->BeginTransaction();
+    try {
+        $LinkID = $db->update_clob($_table_board, "con_body", "con_no = {$con_no}", $con_body, $ALinkID = null);
+        oci_commit($LinkID);
+    } catch (Exception $ex) {
+        $db->rollback();
+        echo $ex;
+        exit;
+    }
+    $db->EndTransaction();
 
     //파일 업로드
     // $uploadFile = Fun::uploadFile("userfile", "upload_file/{$con_no}");
@@ -94,7 +117,7 @@ if ($post["mode"] == "modify" && $post["con_no"] != "") {
     } else {
         //print "파일 업로드 공격의 가능성이 있습니다!\n";
     }
-    
+
     // 알림창
     $db->BeginTransaction();
     try {
@@ -114,7 +137,6 @@ if ($post["mode"] == "modify" && $post["con_no"] != "") {
     $db->EndTransaction();
 
     Fun::alert("정상적으로 글을 추가하였습니다.", "board_list.php");
-
 } else if ($post["mode"] == "delete") {
     $db->BeginTransaction();
     try {
@@ -128,6 +150,7 @@ if ($post["mode"] == "modify" && $post["con_no"] != "") {
         exit;
     }
     $db->EndTransaction();
+
     $db->BeginTransaction();
     try {
         $sql = "DELETE FROM {$_table_alert}
@@ -141,6 +164,7 @@ if ($post["mode"] == "modify" && $post["con_no"] != "") {
     }
     $db->EndTransaction();
     Fun::alert("정상적으로 글을 삭제하였습니다.", "board_list.php");
+    
 } else if ($post["mode"] == "good") {
 
     function good($user_id)
