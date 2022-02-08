@@ -5,7 +5,7 @@ session_start();
 if (!defined("_INCLUDE_")) require_once $_SERVER["DOCUMENT_ROOT"] . "/lib/include.php";
 include "_inc.php";
 @error_reporting(E_ALL);
-if (@$_REQUEST["con_no"]) {
+if (@$_REQUEST["con_no"] && $_SESSION["user_id"]) {
   $con_no = $_REQUEST["con_no"];
   $db = new DB;
   //$db->Debug = true;
@@ -78,7 +78,12 @@ WHERE b.re_user = u.uno and u.dept_id = de.dept_no and u.duty_id = du.duty_no an
   if (!$row[3]) {
     $view_sql = "INSERT INTO VIEW_COUNT(vc_no, con_no, user_id) VALUES($vc_no, $con_no,'{$_SESSION["user_id"]}')";
     $db->query($view_sql);
-    $vc_sql = "UPDATE {$_table_board} SET con_vc= con_vc + 1 WHERE con_no = {$con_no}";
+    $db->commit();
+    
+    $after_sql = "SELECT COUNT(*) FROM VIEW_COUNT WHERE con_no={$con_no}";
+    $vc = $db->query_one($after_sql);
+    
+    $vc_sql = "UPDATE {$_table_board} SET con_vc= $vc WHERE con_no = {$con_no}";
     $row[0]["con_vc"] += 1;
     $db->query($vc_sql);
     $db->commit();
@@ -789,7 +794,7 @@ WHERE b.re_user = u.uno and u.dept_id = de.dept_no and u.duty_id = du.duty_no an
 
           <em class="comment_inbox_name"></em>
           <br />
-          <textarea placeholder="댓글을 남겨보세요" id="com_body" name="com_body" class="comment_inbox_text" style="overflow: hidden; overflow-wrap: break-word; height: 70px;"></textarea>
+          <textarea placeholder="댓글을 남겨보세요" id="com_body" name="com_body" class="comment_inbox_text" style="overflow: hidden; overflow-wrap: break-word; height: 70px;" ></textarea>
         </div>
         <br />
         <div class="register_box" style="text-align:right">
